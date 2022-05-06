@@ -5,8 +5,8 @@
  */
 package Actions;
 
-import fr.insalyon.dasi.metier.modele.Client;
-import fr.insalyon.dasi.metier.service.Service;
+//import fr.insalyon.dasi.metier.modele.Client;
+//import fr.insalyon.dasi.metier.service.Service;
 import javax.servlet.http.HttpServletRequest;
 
 /**

@@ -17,18 +17,15 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mjoseph
  */
-public class AuthentifierClientSerialisation extends Serialisation {
+public class InscrireClientSerialisation extends Serialisation{
 
-    
-    
     @Override
     public void appliquer(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        
-        Boolean connexion =(Boolean) request.getAttribute("connexion");
+        Boolean connexion =(Boolean) request.getAttribute("inscription");
         
         JsonObject container = new JsonObject();
         Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-        container.addProperty("connexion", connexion);
+        container.addProperty("inscription", connexion);
         if (connexion == true){
             JsonObject jsonClient = new JsonObject();
             Client client =(Client) request.getAttribute("client");
@@ -42,7 +39,6 @@ public class AuthentifierClientSerialisation extends Serialisation {
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
         out.println(gson.toJson(container));
-        out.close();
-    }
+        out.close(); }
     
 }
