@@ -25,52 +25,25 @@
         -->
 
         <link rel="stylesheet" href="../css/styles.css?v=1.0" />
+        <script type="module" src="../scripts/index.js"></script>
     </head>
     <body>
-        <ul class="sidebar-menu">
-            <li><span class="nav-section-title"></span></li>
-            <li class="have-children"><a href="#"><span class="fa fa-university"></span>Exhibitions</a>
-                <ul>
-                    <li><a href="#">Add Exhibition</a></li>
-                    <li><a href="#">View Exhibitions</a></li>
-                </ul>
-            </li>
-            <li class="have-children"><a href="#"><span class="fa fa-tags"></span>Category</a>
-                <ul>
-                    <li><a href="#">Add Category</a></li>
-                    <li><a href="#">View Categories</a></li>
-                </ul>
-            </li>
-            <li class="have-children"><a href="#"><span class="fa fa-trophy"></span>Award</a>
-                <ul>
-                    <li><a href="#">Add Award</a></li>
-                    <li><a href="#">View Awards</a></li>
-                </ul>
-            </li>
-            <li class="have-children"><a href="#"><span class="fa fa-gavel"></span>Jury</a>
-                <ul>
-                    <li><a href="#">Add Jury</a></li>
-                    <li><a href="#">View Juries</a></li>
-                </ul>
-            </li>
-            <li class="have-children"><a href="#"><span class="fa fa-user-o"></span>Author</a>
-                <ul>
-                    <li><a href="#">Add Author</a></li>
-                    <li><a href="#">View Authors</a></li>
-                </ul>
-            </li>
-            <li><a href="#"><span class="fa fa-picture-o"></span>Gallery</a></li>
-            <li class="have-children"><a href="#"><span class="fa fa-flag"></span>Reports</a>
-                <ul>
-                    <li><a href="#">View Judging points</a></li>
-                    <li><a href="#">Create Acceptances List</a></li>
-                    <li><a href="#">Create Awarded List</a></li>
-                    <li><a href="#">View Candidates for Awards</a></li>
-                    <li><a href="responsive_table.html">Send Report Cards</a></li>
-                </ul>
-            </li>
-            <li><a href="#"><span class="fa fa-envelope-o"></span>Messages</a></li>
-            <li><a href="#"><span class="fa fa-gear"></span>Configuration</a></li>
-        </ul>
+        <nav>
+            <ul class="sidebar-menu">
+                <li><span class="nav-section-title"></span></li>
+                <li><a href="/home"><span class="fa fa-envelope-o"></span>Accueil</a></li>
+                <li><a href="/profile"><span class="fa fa-envelope-o"></span>Profil</a></li>
+                <li><a href="/history"><span class="fa fa-envelope-o"></span>Historique des interventions</a></li>
+                <li class="have-children"><a href="#"><span class="fa fa-trophy"></span>Demander une Intervation</a>
+                    <ul>
+                        <li><a href="/intervention?type=animal">Intervention Animal</a></li>
+                        <li><a href="/intervention?type=livraison">Intervention Livraison</a></li>
+                        <li><a href="/intervention?type=incident">Intervention Incident</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="content">
+        </div>
     </body>
 </html>
