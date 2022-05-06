@@ -8,6 +8,7 @@ nbactions.xml
 nb-configuration.xml
 .netbeans_automatic_build
 target/
+node_modules/
 
 # Class Files #
 *.class
