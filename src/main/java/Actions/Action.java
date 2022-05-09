@@ -1,8 +1,8 @@
 package Actions;
 
 
-import fr.insalyon.dasi.metier.service.Service;
 import javax.servlet.http.HttpServletRequest;
+import metier.service.Service;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

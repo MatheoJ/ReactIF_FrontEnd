@@ -5,7 +5,14 @@
  */
 package Actions;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import metier.modele.Client;
+import metier.service.Service;
 
 /**
  *
@@ -13,9 +20,15 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class InscrireClientAction extends Action{
 
+    public InscrireClientAction(Service service) {
+        super(service);
+    }
+
     @Override
     public void executer(HttpServletRequest request) {     
         
+        String pattern = "dd/MM/yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         
         String password = request.getParameter("password");
         String firstName = request.getParameter("firstName");
@@ -23,18 +36,23 @@ public class InscrireClientAction extends Action{
         String mail = request.getParameter("mail");
         String phoneNumber = request.getParameter("phoneNumber");
         String adress = request.getParameter("adress");        
-        String birthDate = request.getParameter("birthDate");
+        Date birthDate=null;
+        try {
+            birthDate = simpleDateFormat.parse(request.getParameter("birthDate"));
+        } catch (ParseException ex) {
+            Logger.getLogger(InscrireClientAction.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         Client newClient = new Client(surName, firstName, mail, password, phoneNumber, adress, birthDate);
         
-        Client clientCree = service.inscrireClient(login, password);
+        Client clientCree = service.inscrireClient(newClient);
         
         if(clientCree==null){
             request.setAttribute("inscription",false);
         }
         else{
             request.setAttribute("inscription",true);
-            request.setAttribute("client",client);
+            request.setAttribute("client",clientCree);
         }
     }
     

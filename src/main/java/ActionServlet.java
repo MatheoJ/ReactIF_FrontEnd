@@ -7,15 +7,17 @@
 
 import Actions.Action;
 import Actions.AuthentifierClientAction;
-import fr.insalyon.dasi.dao.JpaUtil;
-import fr.insalyon.dasi.metier.service.Service;
+import Actions.InscrireClientAction;
+import dao.JpaUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import metier.service.Service;
 import vues.AuthentifierClientSerialisation;
+import vues.InscrireClientSerialisation;
 import vues.Serialisation;
 
 /**
@@ -58,6 +60,14 @@ public class ActionServlet extends HttpServlet {
                Action action = new AuthentifierClientAction(service);
                action.executer(request);
                Serialisation serialisation = new AuthentifierClientSerialisation();
+               serialisation.appliquer(request, response);
+               break;
+            }
+            
+            case "inscription":{
+               Action action = new InscrireClientAction(service);
+               action.executer(request);
+               Serialisation serialisation = new InscrireClientSerialisation();
                serialisation.appliquer(request, response);
                break;
             }
