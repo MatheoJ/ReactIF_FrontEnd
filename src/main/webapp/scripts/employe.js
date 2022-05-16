@@ -16,15 +16,6 @@ $(document).ready(function () {
                 {
                     console.log(response.errorMessage);
                 } else {
-                    let nbAnimal = response.nbAnimal;
-                    let nbDelivery = response.nbDelivery;
-                    let nbIncident = response.nbIncident;
-                    let dataset = [
-                        {label: "Animal", count: nbAnimal, color: "#e74c3c"},
-                        {label: "Delivery", count: nbDelivery, color: "#2ecc71"},
-                        {label: "Incident", count: nbIncident, color: "#f1c40f"}
-                    ];
-                    fillChart(dataset);
                     if(response.currentIntervention.exists){
                         
                     }

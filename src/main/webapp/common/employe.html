@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      lang="fr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>React'IF</title>
+        <meta name="description" content="A concierge service" />
+        <meta name="author" content="Mathéo JOSEPH, Antonin MARXER, " />
+
+        <meta property="og:title" content="React'If" />
+        <meta property="og:type" content="website" />
+        <meta property="og:description" content="A concierge service" />
+
+        <!--
+        <meta property="og:image" content="image.png" />
+    
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        -->
+
+        <link rel="stylesheet" href="../css/styles.css?v=1.0" />
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script type="module" src="../scripts/employe.js"></script>
+    </head>
+    <body>
+        <nav>
+            <ul class="sidebar-menu">
+                <li><span class="nav-section-title"></span></li>
+                <li><a href="/profile" data-todo="profile"><span class="fa fa-envelope-o"></span>Profil</a></li>
+                <li><a href="/history" data-todo="history"><span class="fa fa-envelope-o"></span>Historique des interventions</a></li>
+            </ul>
+        </nav>
+        <div id="content">
+            <div id="profile">
+                <div class="profile-header">
+                    <h1 id="name"></h1>
+                    <img src="../images/user-profile.svg"  alt="user image" />
+                </div>
+                <div class="current-intervention">
+                    <h2 id="current-intervention-status">Aucune intervention en cours</h2>
+                    <ul id="current-intervention-list">
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+    </body>
+</html>
