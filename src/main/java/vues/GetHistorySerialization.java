@@ -10,40 +10,28 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import metier.modele.Client;
+import metier.modele.Intervention;
 
 /**
  *
  * @author mjoseph
  */
-public class AuthentifierClientSerialisation extends Serialisation {
+public class GetHistorySerialization extends Serialization {
 
-    
-    
     @Override
     public void appliquer(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        
-        Boolean connexion =(Boolean) request.getAttribute("connexion");
-        
-        JsonObject container = new JsonObject();
+
+        List<Intervention> interventionList = (List<Intervention>)request.getAttribute("interventionList");
         Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-        container.addProperty("connexion", connexion);
-        if (connexion == true){
-            JsonObject jsonClient = new JsonObject();
-            Client client =(Client) request.getAttribute("client");
-            jsonClient.addProperty("id",client.getId());
-            jsonClient.addProperty("nom",client.getNom());
-            jsonClient.addProperty("prenom",client.getPrenom());
-            jsonClient.addProperty("mail",client.getMail());
-            container.add("client", jsonClient);
-        }
         
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        out.println(gson.toJson(container));
+        out.println(gson.toJson(interventionList));
         out.close();
     }
-    
+
 }

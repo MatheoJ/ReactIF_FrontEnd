@@ -8,10 +8,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 */
 
 body {
+    display: flex;
+    flex-direction: row;
 	font-family: sans-serif;
 	font-size: 16px;
-	color: #fff;
+	color: #282828;
 }
+.nav {
+    
+}
+#content {
+    
+}
+
 ul.sidebar-menu {
     margin: 0;
     padding: 0;

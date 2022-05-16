@@ -18,21 +18,21 @@ import metier.modele.Client;
  *
  * @author mjoseph
  */
-public class InscrireClientSerialisation extends Serialisation{
+public class SignUpClientSerialisation extends Serialization{
 
     @Override
     public void appliquer(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Boolean connexion =(Boolean) request.getAttribute("inscription");
+        Boolean connection =(Boolean) request.getAttribute("signedUp");
         
         JsonObject container = new JsonObject();
         Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-        container.addProperty("inscription", connexion);
-        if (connexion == true){
+        container.addProperty("signedUp", connection);
+        if (connection == true){
             JsonObject jsonClient = new JsonObject();
             Client client =(Client) request.getAttribute("client");
             jsonClient.addProperty("id",client.getId());
-            jsonClient.addProperty("nom",client.getNom());
-            jsonClient.addProperty("prenom",client.getPrenom());
+            jsonClient.addProperty("lastName",client.getNom());
+            jsonClient.addProperty("firstName",client.getPrenom());
             jsonClient.addProperty("mail",client.getMail());
             container.add("client", jsonClient);
         }

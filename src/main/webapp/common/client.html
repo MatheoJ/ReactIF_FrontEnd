@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      lang="fr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>React'IF</title>
+        <meta name="description" content="A concierge service" />
+        <meta name="author" content="Mathéo JOSEPH, Antonin MARXER, " />
+
+        <meta property="og:title" content="React'If" />
+        <meta property="og:type" content="website" />
+        <meta property="og:description" content="A concierge service" />
+
+        <!--
+        <meta property="og:image" content="image.png" />
+    
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        -->
+
+        <link rel="stylesheet" href="../css/styles.css?v=1.0" />
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script type="module" src="../scripts/client.js"></script>
+    </head>
+    <body>
+        <nav>
+            <ul class="sidebar-menu">
+                <li><span class="nav-section-title"></span></li>
+                <li><a href="/profile" data-todo="profile"><span class="fa fa-envelope-o"></span>Profil</a></li>
+                <li><a href="/history" data-todo="history"><span class="fa fa-envelope-o"></span>Historique des interventions</a></li>
+                <li class="have-children"><a href="#"><span class="fa fa-trophy"></span>Demander une Intervation</a>
+                    <ul>
+                        <li><a href="/intervention?type=animal" data-todo="intervention-animal">Intervention Animal</a></li>
+                        <li><a href="/intervention?type=delivery" data-todo="intervention-delivery">Intervention Livraison</a></li>
+                        <li><a href="/intervention?type=incident" data-todo="intervention-incident">Intervention Incident</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="content">
+            <div id="profile">
+                <div class="profile-header">
+                    <h1 id="name"></h1>
+                    <img src="../images/user-profile.svg"  alt="user image" />
+                </div>
+                <div class="current-intervention">
+                    <h2 id="current-intervention-status">Aucune intervention en cours</h2>
+                    <ul id="current-intervention-list">
+                    </ul>
+                </div>
+                <div class="information-wrapper">
+                    <div class="statistics">
+                        <h2>Statistiques</h2>
+                        <!-- PIE CHART -->
+                        <div class="content__chart">
+
+                            <div class="counter__block">
+                                <p class="counterTotal" id="intervention_number">0</p>
+                                <p class="activeUser">Nombre total d'interventions</p>
+                            </div>
+
+                            <canvas id="myChart"></canvas>
+
+                            <div class="legend">
+                                <div class="legend__item">
+                                    <div class="legend__percentage" id="percentage_animal"></div>
+                                    <span class="circle" id="circle__animal"></span>
+                                    <p class="legend__text">ANIMAL</p>
+                                </div>
+                                <div class="legend__item">
+                                    <div class="legend__percentage" id="percentage_delivery"></div>
+                                    <span class="circle" id="circle__delivery"></span>
+                                    <p class="legend__text">LIVRAISON</p>
+                                </div>
+                                <div class="legend__item">
+                                    <div class="legend__percentage" id="percentage_incident"></div>
+                                    <span class="circle" id="circle__incident"></span>
+                                    <p class="legend__text">INCIDENT</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div id="history">
+
+            </div>
+            <div id="request">
+                <div id="animal">
+                    <button class="send-intervention" data-todo="intervention-animal">Envoyer</button>
+                </div>
+                <div id="delivery">
+                    <button class="send-intervention" data-todo="intervention-delivery">Envoyer</button>
+                </div>
+                <div id="incident">
+                    <button class="send-intervention" data-todo="intervention-incident">Envoyer</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

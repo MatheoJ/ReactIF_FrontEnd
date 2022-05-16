@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
- public abstract class Serialisation {
+ public abstract class Serialization {
     
     protected PrintWriter getWriter(HttpServletResponse response) throws IOException{
         response.setContentType("application/json;charset=UTF-8");

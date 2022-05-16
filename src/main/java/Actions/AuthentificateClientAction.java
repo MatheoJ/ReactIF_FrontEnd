@@ -15,9 +15,9 @@ import metier.service.Service;
  *
  * @author mjoseph
  */
-public class AuthentifierClientAction extends Action {
+public class AuthentificateClientAction extends Action {
 
-    public AuthentifierClientAction(Service service) {
+    public AuthentificateClientAction(Service service) {
         super(service);
     }
 

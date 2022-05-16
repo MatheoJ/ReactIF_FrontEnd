@@ -18,9 +18,9 @@ import metier.service.Service;
  *
  * @author mjoseph
  */
-public class InscrireClientAction extends Action{
+public class SignUpClientAction extends Action{
 
-    public InscrireClientAction(Service service) {
+    public SignUpClientAction(Service service) {
         super(service);
     }
 
@@ -40,7 +40,7 @@ public class InscrireClientAction extends Action{
         try {
             birthDate = simpleDateFormat.parse(request.getParameter("birthDate"));
         } catch (ParseException ex) {
-            Logger.getLogger(InscrireClientAction.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SignUpClientAction.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         Client newClient = new Client(surName, firstName, mail, password, phoneNumber, adress, birthDate);
@@ -48,10 +48,10 @@ public class InscrireClientAction extends Action{
         Client clientCree = service.inscrireClient(newClient);
         
         if(clientCree==null){
-            request.setAttribute("inscription",false);
+            request.setAttribute("signedUp",false);
         }
         else{
-            request.setAttribute("inscription",true);
+            request.setAttribute("signedUp",true);
             request.setAttribute("client",clientCree);
         }
     }

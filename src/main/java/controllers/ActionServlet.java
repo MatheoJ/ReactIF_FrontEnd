@@ -6,10 +6,12 @@ package controllers;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+import vues.AddInterventionSerialization;
 import Actions.Action;
-import Actions.AuthentifierClientAction;
-import Actions.InscrireClientAction;
+import Actions.AuthentificateClientAction;
+import Actions.AddInterventionAction;
+import Actions.GetProfileAction;
+import Actions.SignUpClientAction;
 import dao.JpaUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,10 +19,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import metier.modele.Client;
 import metier.service.Service;
-import vues.AuthentifierClientSerialisation;
-import vues.InscrireClientSerialisation;
-import vues.Serialisation;
+import vues.AuthentificateClientSerialization;
+import vues.GetErrorSerialization;
+import vues.GetHistorySerialization;
+import vues.GetProfileSerialization;
+import vues.SignUpClientSerialisation;
+import vues.Serialization;
 
 /**
  *
@@ -28,19 +35,17 @@ import vues.Serialisation;
  */
 public class ActionServlet extends HttpServlet {
 
-    
- @Override
-  public void init() throws ServletException {
-    super.init();
-    JpaUtil.init();
-  }
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        JpaUtil.init();
+    }
 
-  @Override
-  public void destroy() {
-    JpaUtil.destroy();
-    super.destroy();
-  }
-
+    @Override
+    public void destroy() {
+        JpaUtil.destroy();
+        super.destroy();
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -51,27 +56,86 @@ public class ActionServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String todo = request.getParameter("todo");
         Service service = new Service();
         response.setContentType("text/html;charset=UTF-8");
-        
-        switch(todo){
-            case "connecter":{
-               Action action = new AuthentifierClientAction(service);
-               action.executer(request);
-               Serialisation serialisation = new AuthentifierClientSerialisation();
-               serialisation.appliquer(request, response);
-               break;
+        //Creat a session if it has not been previously done
+        HttpSession session = request.getSession(true);
+
+        switch (todo) {
+            case "connect": {
+                Action action = new AuthentificateClientAction(service);
+                action.executer(request);
+                Serialization serialisation = new AuthentificateClientSerialization();
+                serialisation.appliquer(request, response);
+
+                if (request.getAttribute("connexion") == Boolean.TRUE) {
+                    session.setAttribute("client", request.getAttribute("client"));
+                }
+
+                break;
+            }
+
+            case "signup": {
+
+                Action action = new SignUpClientAction(service);
+                action.executer(request);
+                Serialization serialisation = new SignUpClientSerialisation();
+                serialisation.appliquer(request, response);
+                break;
+            }
+
+            case "profile": {
+                if (checkIsConnected(session)) {                    
+                    request.setAttribute("error", Boolean.FALSE);
+                    request.setAttribute("client", (Client) session.getAttribute("client"));
+                    Action action = new GetProfileAction(service);
+                    action.executer(request);
+                    Serialization serialisation = new GetProfileSerialization();
+                    serialisation.appliquer(request, response);
+                } else {
+                    request.setAttribute("error", Boolean.TRUE);
+                    request.setAttribute("errorMessage", "You must be connected");
+                    sendError(request, response);
+                }
+                break;
             }
             
-            case "inscription":{
-               Action action = new InscrireClientAction(service);
-               action.executer(request);
-               Serialisation serialisation = new InscrireClientSerialisation();
-               serialisation.appliquer(request, response);
-               break;
+            case "history": {
+                if (checkIsConnected(session)) {                    
+                    request.setAttribute("error", Boolean.FALSE);
+                    request.setAttribute("client", (Client) session.getAttribute("client"));
+                    Action action = new AddInterventionAction(service);
+                    action.executer(request);
+                    Serialization serialisation = new GetHistorySerialization();
+                    serialisation.appliquer(request, response);
+                } else {
+                    request.setAttribute("error", Boolean.TRUE);
+                    request.setAttribute("errorMessage", "You must be connected");
+                    sendError(request, response);
+                }
+                break;
+            }
+            case "intervention-delivery": {
+                // EMPTY CASE
+            }
+            case "intervention-incident": {
+                // EMPTY CASE
+            }
+            case "intervention-animal": {
+                if (checkIsConnected(session)) { 
+                    request.setAttribute("client", (Client) session.getAttribute("client"));
+                    Action action = new AddInterventionAction(service);
+                    action.executer(request);
+                    AddInterventionSerialization serialisation = new AddInterventionSerialization();
+                    serialisation.appliquer(request, response);
+                } else {
+                    request.setAttribute("error", Boolean.TRUE);
+                    request.setAttribute("errorMessage", "You must be connected");
+                    sendError(request, response);
+                }
+                break;
             }
         }
     }
@@ -114,5 +178,14 @@ public class ActionServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private boolean checkIsConnected(HttpSession session) {
+        return session.getAttribute("client") != null;
+    }
+
+    private void sendError(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Serialization serialization = new GetErrorSerialization();
+        serialization.appliquer(request, response);
+    }
 
 }
