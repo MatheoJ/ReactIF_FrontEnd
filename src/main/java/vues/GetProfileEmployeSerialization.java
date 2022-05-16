@@ -60,7 +60,7 @@ public class GetProfileEmployeSerialization extends Serialization {
                     break;
                 case "Livraison":
                     jsonCurrentIntervention.addProperty("object", ((InterventionLivraison) currentIntervention).getObjet());
-                    jsonCurrentIntervention.addProperty("enterprise", ((InterventionLivraison) currentIntervention).getEntreprise());
+                    jsonCurrentIntervention.addProperty("company", ((InterventionLivraison) currentIntervention).getEntreprise());
                     break;
             }
         }

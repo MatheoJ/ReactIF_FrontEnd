@@ -29,10 +29,10 @@ public class AuthentificateEmployeAction extends Action {
         Employe employe = service.authentifierEmploye(login, password);
         
         if(employe==null){
-            request.setAttribute("connexion",false);
+            request.setAttribute("connection",false);
         }
         else{
-            request.setAttribute("connexion",true);
+            request.setAttribute("connection",true);
             request.setAttribute("employe",employe);
         }       
         

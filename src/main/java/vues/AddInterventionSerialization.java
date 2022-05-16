@@ -59,7 +59,7 @@ public class AddInterventionSerialization extends Serialization {
                     break;
                 case "Livraison":
                     jsonCurrentIntervention.addProperty("object", ((InterventionLivraison) intervention).getObjet());
-                    jsonCurrentIntervention.addProperty("enterprise", ((InterventionLivraison) intervention).getEntreprise());
+                    jsonCurrentIntervention.addProperty("company", ((InterventionLivraison) intervention).getEntreprise());
                     break;
             }
 

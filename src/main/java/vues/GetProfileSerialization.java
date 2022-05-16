@@ -30,13 +30,13 @@ public class GetProfileSerialization extends Serialization {
 
         JsonObject container = new JsonObject();
         Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-        
+
         JsonObject jsonCurrentIntervention = new JsonObject();
         Intervention currentIntervention = (Intervention) request.getAttribute("currentIntervention");
-        jsonCurrentIntervention.addProperty("exists",(currentIntervention!=null));
-        if(currentIntervention!=null){
+        jsonCurrentIntervention.addProperty("exists", (currentIntervention != null));
+        if (currentIntervention != null) {
 
-            jsonCurrentIntervention.addProperty("type", currentIntervention.getType());        
+            jsonCurrentIntervention.addProperty("type", currentIntervention.getType());
             String pattern = "dd/MM/yyyy";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
             jsonCurrentIntervention.addProperty("date", simpleDateFormat.format(currentIntervention.getDateDemande()));
@@ -48,8 +48,7 @@ public class GetProfileSerialization extends Serialization {
             jsonEmployee.addProperty("first_name", currentIntervention.getEmploye().getPrenom());
             jsonCurrentIntervention.add("employee", jsonEmployee);
 
-            switch (currentIntervention.getType())
-            {
+            switch (currentIntervention.getType()) {
                 case "Animal":
                     jsonCurrentIntervention.addProperty("species", ((InterventionAnimal) currentIntervention).getEspeceAnimal());
                     break;
@@ -58,33 +57,37 @@ public class GetProfileSerialization extends Serialization {
                     break;
                 case "Livraison":
                     jsonCurrentIntervention.addProperty("object", ((InterventionLivraison) currentIntervention).getObjet());
-                    jsonCurrentIntervention.addProperty("enterprise", ((InterventionLivraison) currentIntervention).getEntreprise());
+                    jsonCurrentIntervention.addProperty("company", ((InterventionLivraison) currentIntervention).getEntreprise());
                     break;
             }
+        } else {
         }
-        else{
-        }
-        
-        
+
         container.add("intervention", jsonCurrentIntervention);
-        
-        Boolean connexion = (Boolean) request.getAttribute("connexion");
+
+        Boolean connection = (Boolean) request.getAttribute("connection");
         Integer nbTotal = (Integer) request.getAttribute("nbTotal");
         Integer nbAnimal = (Integer) request.getAttribute("nbAnimal");
         Integer nbDelivery = (Integer) request.getAttribute("nbDelivery");
         Integer nbIncident = (Integer) request.getAttribute("nbIncident");
 
-        
         container.addProperty("nbTotal", nbTotal);
         container.addProperty("nbAnimal", nbAnimal);
         container.addProperty("nbDelivery", nbDelivery);
         container.addProperty("nbIncident", nbIncident);
+        
         JsonObject jsonClient = new JsonObject();
         Client client = (Client) request.getAttribute("client");
         jsonClient.addProperty("id", client.getId());
-        jsonClient.addProperty("nom", client.getNom());
-        jsonClient.addProperty("prenom", client.getPrenom());
-        jsonClient.addProperty("mail", client.getMail());
+        jsonClient.addProperty("last_name", client.getNom());
+        jsonClient.addProperty("first_name", client.getPrenom());
+        jsonClient.addProperty("email", client.getMail());
+        jsonClient.addProperty("address", client.getAdresse());
+        jsonClient.addProperty("phone_number", client.getTelephone());
+        String pattern = "dd/MM/yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        jsonClient.addProperty("signup_date", simpleDateFormat.format(client.getDateInscription()));
+
         container.add("client", jsonClient);
 
         response.setContentType("application/json;charset=UTF-8");

@@ -25,38 +25,42 @@
         -->
 
         <link rel="stylesheet" href="../css/styles.css?v=1.0" />
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="../css/client.css?v=1.0" />
+        <link rel="stylesheet" href="../css/chart.css?v=1.0" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script type="module" src="../scripts/client.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+
     </head>
     <body>
-        <nav>
+        <nav class="nav-menu">
             <ul class="sidebar-menu">
                 <li><span class="nav-section-title"></span></li>
-                <li><a href="/profile" data-todo="profile"><span class="fa fa-envelope-o"></span>Profil</a></li>
-                <li><a href="/history" data-todo="history"><span class="fa fa-envelope-o"></span>Historique des interventions</a></li>
-                <li class="have-children"><a href="#"><span class="fa fa-trophy"></span>Demander une Intervation</a>
+                <li><a class="box redirect-link" href="/profile" data-todo="profile"><img class="icon" src="../images/user-icon.svg"  alt="user image" /><span>Profil</span></a></li>
+                <li><a class="box redirect-link" href="/history" data-todo="history"><img class="icon" src="../images/history.svg"  alt="user image" /><span>Historique des interventions</span></a></li>
+                <li class="have-children"><a class="box" href="#"><img class="icon" src="../images/house-user.svg"  alt="user image" /><span>Demander une Intervention</span></a>
                     <ul>
-                        <li><a href="/intervention?type=animal" data-todo="intervention-animal">Intervention Animal</a></li>
-                        <li><a href="/intervention?type=delivery" data-todo="intervention-delivery">Intervention Livraison</a></li>
-                        <li><a href="/intervention?type=incident" data-todo="intervention-incident">Intervention Incident</a></li>
+                        <li><a class="redirect-link" href="/intervention?type=animal" data-todo="intervention-animal">Intervention Animal</a></li>
+                        <li><a class="redirect-link" href="/intervention?type=delivery" data-todo="intervention-delivery">Intervention Livraison</a></li>
+                        <li><a class="redirect-link" href="/intervention?type=incident" data-todo="intervention-incident">Intervention Incident</a></li>
                     </ul>
                 </li>
             </ul>
         </nav>
         <div id="content">
-            <div id="profile">
+            <div id="profile" style="display: none;">
                 <div class="profile-header">
-                    <h1 id="name"></h1>
+                    <h1 id="profile-name"></h1>
                     <img src="../images/user-profile.svg"  alt="user image" />
                 </div>
-                <div class="current-intervention">
+                <div class="tile current-intervention">
                     <h2 id="current-intervention-status">Aucune intervention en cours</h2>
                     <ul id="current-intervention-list">
                     </ul>
                 </div>
                 <div class="information-wrapper">
-                    <div class="statistics">
+                    <div class="tile statistics">
                         <h2>Statistiques</h2>
                         <!-- PIE CHART -->
                         <div class="content__chart">
@@ -66,7 +70,9 @@
                                 <p class="activeUser">Nombre total d'interventions</p>
                             </div>
 
-                            <canvas id="myChart"></canvas>
+                            <div class="chart-wrapper">
+                                <canvas id="myChart"></canvas>
+                            </div>
 
                             <div class="legend">
                                 <div class="legend__item">
@@ -86,16 +92,55 @@
                                 </div>
                             </div>
 
+                            <p style="text-align: right;"><br /><a class="redirect-link" href="/history" data-todo="history">Voir l'historique complet</a></p>
+
                         </div>
+                    </div>
+                    <div class="tile personal_data">
+                        <h2>Informations personnelles</h2>
 
-
+                        <p style="margin-top: 3em;">
+                            <span class="bold">Téléphone :</span>
+                            <br />
+                            <span id="phone_number"></span>
+                            <br />
+                            <br />
+                            <span class="bold">Adresse postale :</span>
+                            <br />
+                            <span id="address"></span>
+                            <br />
+                            <br />
+                            <span class="bold">Adresse électronique :</span>
+                            <br />
+                            <span id="email"></span>
+                            <br />
+                            <br />
+                            <span class="bold">Date d'inscription :</span>
+                            <br />
+                            <span id="signup_date"></span>
+                        </p>
                     </div>
                 </div>
             </div>
-            <div id="history">
-
+            <div id="history" style="display: none;">
+                <div class="tile history">
+                    <h2>Historique des interventions</h2>
+                    <table class="table" id="history-table">
+                        <tr>
+                            <th>Type</th>
+                            <th>Date demande</th>
+                            <th>Etat</th>
+                            <th>Date clôture</th>
+                            <th>Statut</th>
+                            <th>Employé</th>
+                            <th>Animal</th>
+                            <th>Entreprise</th>
+                            <th>Objet</th>
+                        </tr>
+                    </table>
+                </div>
             </div>
-            <div id="request">
+            <div id="request" style="display: none;">
                 <div id="animal">
                     <button class="send-intervention" data-todo="intervention-animal">Envoyer</button>
                 </div>

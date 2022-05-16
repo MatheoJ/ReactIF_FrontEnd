@@ -7,19 +7,73 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : anton
 */
 
+@media only screen and (min-width: 960px) {
+    /* styles for browsers larger than 960px; */
+    body {
+        flex-direction: column;
+    }
+    .nav {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.icon {
+    max-height: 24px;
+    max-width: 24px;
+    height: auto;
+    width: auto;
+    margin-right: 5px;
+}
+
+.box {
+    display: flex;
+    align-items: center;
+}
+
 body {
     display: flex;
     flex-direction: row;
-	font-family: sans-serif;
-	font-size: 16px;
-	color: #282828;
+    font-family: sans-serif;
+    font-size: 16px;
+    color: #282828;
 }
-.nav {
-    
+nav {
+    height: 100vh;
+    width: auto;
+    background-color: #4d5158;
+}
+.bold {
+    font-weight: bold;
+}
+.red {
+    color: #e74c3c;
+}
+.green {
+    color: #2ecc71;
+}
+.not-applicable {
+    color: #bdc3c7;
+}
+.grey {
+    color: #7f8c8d;
 }
 #content {
-    
+    height: 100%;
+    flex-grow: 1;
+    flex: 1;
+    overflow-y: scroll;
+    margin-
 }
+
+#content > * {
+    display: flex;
+    flex-direction: column;
+}
+.content__chart {
+    max-width: 750px;
+}
+
 
 ul.sidebar-menu {
     margin: 0;
@@ -29,52 +83,77 @@ ul.sidebar-menu {
     list-style-type: none;
 }
 .sidebar-menu li a span {
-	margin-right: 20px;
-  color: #fff;
+    margin-right: 20px;
+    color: #fff;
 }
 .sidebar-menu li a  {
-	background-color: #4d5158;
-	padding: 20px 25px;
-	display: block;
-	text-decoration: none;
-	color: #fff;
+    background-color: #4d5158;
+    padding: 20px 25px;
+    text-decoration: none;
+    color: #fff;
 }
 .sidebar-menu li a:hover  {
-	background-color: #52565d;
-	padding: 20px 25px;
-	display: block;
-	text-decoration: none;
-	color: #fff;
+    background-color: #52565d;
+    padding: 20px 25px;
+    text-decoration: none;
+    color: #fff;
 }
 li.have-children ul {
-	padding: 0px;
-} 
+    padding: 0px;
+}
 li.have-children ul li a {
-	background-color: #3c3636;
-	padding-left: 62px;
-} 
+    background-color: #3c3636;
+    padding-left: 62px;
+    display: block;
+}
 li.have-children ul li a:hover {
-  color: #fff;
-	background-color: #52565d;
-	padding-left: 62px;
-} 
+    color: #fff;
+    background-color: #52565d;
+    padding-left: 62px;
+    display: block;
+}
 li.have-children, li {
-	position: relative;
+    position: relative;
 }
 .have-children span::after {
-  position: absolute;
-  right: 30px;
-  content: "\f054";
-  color: #fff;
-  transition: all .5s;
+    font-family: "Font Awesome 5 Free";
+    position: absolute;
+    right: 30px;
+    content: "\f054";
+    color: #fff;
+    transition: all .5s;
+    font-weight: 900;
 }
 li.active.have-children span::after {
-	-moz-transform: rotate(90deg);
-	-o-transform: rotate(90deg);
-	-webkit-transform: rotate(90deg);
-	transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 .sidebar-menu .have-children > ul {
     display: none;
 }
 
+.table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table td, .table th {
+  border-bottom: 1px solid #ddd;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 0.85em;
+}
+
+.table tr:nth-child(even){background-color: #f2f2f2;}
+
+.table tr:hover {background-color: #ddd;}
+
+.table th {
+  color: #616161;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+}

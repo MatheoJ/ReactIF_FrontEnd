@@ -11,11 +11,12 @@ import Actions.Action;
 import Actions.AuthentificateClientAction;
 import Actions.AddInterventionAction;
 import Actions.AuthentificateEmployeAction;
+import Actions.GetHistoryAction;
 import Actions.GetProfileAction;
+import Actions.GetProfileEmployeAction;
 import Actions.SignUpClientAction;
 import dao.JpaUtil;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ import vues.AuthentificateClientSerialization;
 import vues.AuthentificateEmployeSerialization;
 import vues.GetErrorSerialization;
 import vues.GetHistorySerialization;
+import vues.GetProfileEmployeSerialization;
 import vues.GetProfileSerialization;
 import vues.SignUpClientSerialisation;
 import vues.Serialization;
@@ -73,8 +75,9 @@ public class ActionServlet extends HttpServlet {
                 Serialization serialisation = new AuthentificateClientSerialization();
                 serialisation.appliquer(request, response);
 
-                if (request.getAttribute("connexion") == Boolean.TRUE) {
+                if (request.getAttribute("connection") == Boolean.TRUE) {
                     session.setAttribute("client", request.getAttribute("client"));
+                    System.out.println(request.getAttribute("client"));
                 }
 
                 break;
@@ -86,7 +89,7 @@ public class ActionServlet extends HttpServlet {
                 Serialization serialisation = new AuthentificateEmployeSerialization();
                 serialisation.appliquer(request, response);
 
-                if (request.getAttribute("connexion") == Boolean.TRUE) {
+                if (request.getAttribute("connection") == Boolean.TRUE) {
                     session.setAttribute("employe", request.getAttribute("employe"));
                 }
                 break;
@@ -102,6 +105,7 @@ public class ActionServlet extends HttpServlet {
             }
 
             case "profile": {
+                System.out.println(session.getAttribute("client"));
                 if (checkIsConnected(session)) {                    
                     request.setAttribute("error", Boolean.FALSE);
                     request.setAttribute("client", (Client) session.getAttribute("client"));
@@ -137,7 +141,7 @@ public class ActionServlet extends HttpServlet {
                 if (checkIsConnected(session)) {                    
                     request.setAttribute("error", Boolean.FALSE);
                     request.setAttribute("client", (Client) session.getAttribute("client"));
-                    Action action = new AddInterventionAction(service);
+                    Action action = new GetHistoryAction(service);
                     action.executer(request);
                     Serialization serialisation = new GetHistorySerialization();
                     serialisation.appliquer(request, response);

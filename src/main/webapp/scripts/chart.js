@@ -36,6 +36,7 @@ var myChart = new Chart(ctx, {
     ]
   },
   options: {
+    responsive: true,
     tooltips: {
       callbacks: {
         label: function (tooltipItem, data) {
