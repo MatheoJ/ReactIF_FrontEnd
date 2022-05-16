@@ -58,7 +58,16 @@
     background-color: #F5F7F8;
 }
 
+.intervention {
+    background-color: #F5F7F8;
+    margin-top: 2em;
+}
+
+
 .personal_data {
     background-color: #6563FF;
     flex-grow: 1;
+}
+.personal_data > h2, .personal_data > p {
+    color: #F5F7F8;
 }

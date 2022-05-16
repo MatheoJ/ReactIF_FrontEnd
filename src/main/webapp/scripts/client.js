@@ -46,78 +46,98 @@ $(document).ready(function () {
     });
     $(".redirect-link").on("click", function (i) {
         i.preventDefault();
-        // Appel AJAX
-        let href = $(this).attr('href');
-        // If the link isn't empty
-        if (href !== "#") {
-            let todo = $(this).attr('data-todo');
-            // Appel AJAX
-            $.ajax({
-                url: '../ActionServlet',
-                method: 'POST',
-                data: {
-                    todo: todo
-                },
-                dataType: 'json'
-            })
-                    .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
-                        console.log('Response', response); // LOG dans Console Javascript
-                        if (response.error) {
-                            console.log('Error', response.error); // LOG dans Console Javascript
-                            alert("Erreur lors de l'appel AJAX\n" + response.error);
-                            window.history.pushState("", "", href);
-                        } else {
-                            if (oldDiv !== null)
-                            {
-                                document.getElementById(oldDiv).style.display = "none";
-                            }
-
-                            switch (todo)
-                            {
-                                case "profile":
-                                    oldDiv = "profile"
-                                    document.getElementById("profile").style.display = "flex";
-                                    fillProfile(response);
-                                case "history":
-                                    oldDiv = "history"
-                                    document.getElementById("history").style.display = "flex";
-                                    fillHistory(response);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
+        let todo = $(this).attr('data-todo');
+        switch (todo)
+        {
+            case "intervention-animal":
+            case "intervention-delivery":
+            case "intervention-incident":
+                togglePanel(todo);
+                break;
+            default:
+                // Appel AJAX
+                let href = $(this).attr('href');
+                // If the link isn't empty
+                if (href !== "#") {
+                    // Appel AJAX
+                    $.ajax({
+                        url: '../ActionServlet',
+                        method: 'POST',
+                        data: {
+                            todo: todo
+                        },
+                        dataType: 'json'
                     })
-                    .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
-                        console.log('Error', error); // LOG dans Console Javascript
-                        alert("Erreur lors de l'appel AJAX");
-                    })
-                    .always(function () { // Fonction toujours appelée
+                            .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                                console.log('Response', response); // LOG dans Console Javascript
+                                if (response.error) {
+                                    console.log('Error', response.error); // LOG dans Console Javascript
+                                    alert("Erreur lors de l'appel AJAX\n" + response.error);
+                                    window.history.pushState("", "", href);
+                                } else {
+                                    togglePanel(todo);
+                                    switch (todo)
+                                    {
+                                        case "profile":
+                                            // Destroy previous charts
+                                            Chart.helpers.each(Chart.instances, function (instance) {
+                                                instance.destroy();
+                                            });
+                                            fillProfile(response);
+                                            break;
+                                        case "history":
+                                            fillHistory(response);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            })
+                            .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                                console.log('Error', error); // LOG dans Console Javascript
+                                alert("Erreur lors de l'appel AJAX");
+                            })
+                            .always(function () { // Fonction toujours appelée
 
-                    });
+                            });
+                }
         }
+
     });
     $(".send-intervention").on("click", function (i) {
 // Appel AJAX
         let todo = $(this).attr('data-todo');
+        let data = {
+                todo: todo
+        };
+        switch (todo) {
+            case "intervention-animal":
+                data["species"] = document.getElementById("animal-species").value;
+                data["description"] = document.getElementById("animal-description").value;
+                break;
+            case "intervention-delivery":
+                data["object"] = document.getElementById("delivery-object").value;
+                data["company"] = document.getElementById("delivery-company").value;
+                data["description"] = document.getElementById("delivery-description").value;
+                break;
+            case "intervention-incident":
+                data["description"] = document.getElementById("intervention-description").value;
+                break;
+        }
+        console.log(data);
         // Appel AJAX
         $.ajax({
             url: '../ActionServlet',
             method: 'POST',
-            data: {
-                todo: todo,
-                animal: "Chien",
-                object: "Canapé",
-                company: "AMAZON. US",
-                description: "Oskour"
-            },
+            data: jQuery.param(data),
             dataType: 'json'
         })
                 .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
                     console.log('Response', response); // LOG dans Console Javascript
                     if (!response.error) {
-
+                        alert("Demande d'intervention créée avec succès !");
                     } else {
+                        alert("Echec de création de la demande d'intervention.\nVeuillez réessayer plus tard");
                     }
                 })
                 .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
@@ -291,4 +311,14 @@ function fillProfile(response)
     } else {
         $("#current-intervention-status").textContent = "Aucune intervention en cours";
     }
+}
+
+function togglePanel(newDiv)
+{
+    if (oldDiv !== null)
+    {
+        document.getElementById(oldDiv).style.display = "none";
+    }
+    oldDiv = newDiv
+    document.getElementById(newDiv).style.display = "flex";
 }

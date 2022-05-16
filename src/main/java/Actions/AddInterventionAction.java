@@ -30,37 +30,33 @@ public class AddInterventionAction extends Action {
         super(service);
     }
 
-    
-    
-    
     @Override
     public void executer(HttpServletRequest request) {
         Client client = (Client) request.getAttribute("client");
-        String description = (String)request.getAttribute("description");
+        String description = (String) request.getAttribute("description");
         Intervention intervention = null;
-        switch((String)request.getAttribute("todo")){
+        switch ((String) request.getParameter("todo")) {
             case "intervention-animal":
-                String animal = (String)request.getAttribute("animal");
-                intervention = new InterventionAnimal(animal,description);
+                String animal = (String) request.getAttribute("species");
+                intervention = new InterventionAnimal(animal, description);
                 break;
             case "intervention-delivery":
-                String object = (String)request.getAttribute("object");
-                String company = (String)request.getAttribute("company");
-                intervention = new InterventionLivraison(object,company, description);
+                String object = (String) request.getAttribute("object");
+                String company = (String) request.getAttribute("company");
+                intervention = new InterventionLivraison(object, company, description);
                 break;
             case "intervention-incident":
                 intervention = new InterventionIncident(description);
                 break;
-                    
+
         }
-        if(intervention != null){
-            Intervention newIntervention= service.demanderIntervention(intervention, client);
-            request.setAttribute("intervention",newIntervention);
+        if (intervention != null) {
+            Intervention newIntervention = service.demanderIntervention(intervention, client);
+            request.setAttribute("intervention", newIntervention);
+        } else {
+            request.setAttribute("intervention", null);
         }
-        else{
-            request.setAttribute("intervention",null);
-        }
-        
+
     }
 
 }

@@ -24,6 +24,10 @@
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         -->
 
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet" />
+
         <link rel="stylesheet" href="../css/styles.css?v=1.0" />
         <link rel="stylesheet" href="../css/client.css?v=1.0" />
         <link rel="stylesheet" href="../css/chart.css?v=1.0" />
@@ -35,11 +39,12 @@
     </head>
     <body>
         <nav class="nav-menu">
+            <p class="title-menu">REACT'IF</p>
             <ul class="sidebar-menu">
                 <li><span class="nav-section-title"></span></li>
                 <li><a class="box redirect-link" href="/profile" data-todo="profile"><img class="icon" src="../images/user-icon.svg"  alt="user image" /><span>Profil</span></a></li>
                 <li><a class="box redirect-link" href="/history" data-todo="history"><img class="icon" src="../images/history.svg"  alt="user image" /><span>Historique des interventions</span></a></li>
-                <li class="have-children"><a class="box" href="#"><img class="icon" src="../images/house-user.svg"  alt="user image" /><span>Demander une Intervention</span></a>
+                <li class="have-children"><a class="box" href="#"><img class="icon" src="../images/house-user.svg"  alt="user image" /><span>Demander une intervention</span></a>
                     <ul>
                         <li><a class="redirect-link" href="/intervention?type=animal" data-todo="intervention-animal">Intervention Animal</a></li>
                         <li><a class="redirect-link" href="/intervention?type=delivery" data-todo="intervention-delivery">Intervention Livraison</a></li>
@@ -140,17 +145,67 @@
                     </table>
                 </div>
             </div>
-            <div id="request" style="display: none;">
-                <div id="animal">
-                    <button class="send-intervention" data-todo="intervention-animal">Envoyer</button>
+            <div id="intervention-animal" style="display: none;">
+                <div class="tile intervention">
+                    <div class="fields">
+                        <div class="pair">
+                            <span class="bold">Type:</span>
+                            <span class="grey bold">Animal</span>
+                        </div>
+                        <div class="pair">
+                            <span class="bold">Animal:</span>
+                            <input class="rounded-input" id="animal-species" type="text" value="" placeholder="Chien"/>
+                        </div>
+                        <div class="pair">
+                            <span class="bold">Description</span>
+                            <textarea class="rounded-input" id="animal-description" name="description" 
+                                      rows="5" cols="33"></textarea>
+                        </div>
+                    </div>
+                    <div class="centered">
+                        <button class="rounded-button send-intervention" data-todo="intervention-animal">Envoyer</button>
+                    </div>
                 </div>
-                <div id="delivery">
-                    <button class="send-intervention" data-todo="intervention-delivery">Envoyer</button>
+                <div id="intervention-delivery" style="display: none;">
+                    <div class="fields">
+                        <div class="pair">
+                            <span class="bold">Type:</span>
+                            <span class="grey bold">Livraison</span>
+                        </div>
+                        <div class="pair">
+                            <span class="bold">Objet:</span>
+                            <input class="rounded-input" id="delivery-object" type="text" value="" placeholder="Canapé"/>
+                        </div>
+                        <div class="pair">
+                            <span class="bold">Entreprise:</span>
+                            <input class="rounded-input" id="delivery-company" type="text" value="" placeholder="JOLISMEUBLE SA"/>
+                        </div>
+                        <div class="pair">
+                            <span class="bold">Description</span>
+                            <textarea class="rounded-input" id="delivery-description" name="description" 
+                                      rows="5" cols="33"></textarea>
+                        </div>
+                    </div>
+                    <div class="centered">
+                        <button class="rounded-button send-intervention" data-todo="intervention-delivery">Envoyer</button>
+                    </div>
                 </div>
-                <div id="incident">
-                    <button class="send-intervention" data-todo="intervention-incident">Envoyer</button>
+                <div id="intervention-incident" style="display: none;">
+                    <div class="fields">
+                        <div class="pair">
+                            <span class="bold">Type:</span>
+                            <span class="grey bold">Incident</span>
+                        </div>
+                        <div class="pair">
+                            <span class="bold">Description</span>
+                            <textarea class="rounded-input" id="incident-description" name="description" 
+                                      rows="5" cols="33"></textarea>
+                        </div>
+                    </div>
+                    <div class="centered">
+                        <button class="rounded-button send-intervention" data-todo="intervention-incident">Envoyer</button>
+                    </div>
                 </div>
             </div>
-        </div>
     </body>
 </html>
