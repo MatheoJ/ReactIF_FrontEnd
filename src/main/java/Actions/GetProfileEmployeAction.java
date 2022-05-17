@@ -6,6 +6,7 @@
 package Actions;
 
 import com.google.gson.JsonObject;
+import com.google.maps.model.LatLng;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,6 +19,7 @@ import metier.modele.Client;
 import metier.modele.Employe;
 import metier.modele.Intervention;
 import metier.service.Service;
+import util.GeoNetApi;
 
 /**
  *
@@ -34,7 +36,7 @@ public class GetProfileEmployeAction extends Action {
         Employe employe = (Employe) request.getAttribute("employe");
         
         Intervention currentIntervention = service.recupererInterventionEnCours(employe); // return null if it doesn't exist
-        
+        List<Intervention> interventionList = service.consulterHistoriqueIntervention(employe);
         Date date = new Date();
         String pattern = "dd/MM/yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -51,7 +53,20 @@ public class GetProfileEmployeAction extends Action {
         Date date2 = c.getTime();
         
         Double distance = service.calculerDistanceParcourue(employe, date, date2);
-         
+        
+        double []lat = new double[interventionList.size()];
+        double []lng = new double[interventionList.size()];
+        int j=0;
+        for (Intervention i : interventionList){
+            LatLng coordsAgence = GeoNetApi.getLatLng(employe.getAgence().getAdresse());
+            lat[j]=coordsAgence.lat;
+            lng[j]=coordsAgence.lng;
+            j++;
+        }
+        
+        request.setAttribute("lat", lat);
+        request.setAttribute("lng", lng);
+        request.setAttribute("interventionList", interventionList);
         request.setAttribute("distance", distance);       
         request.setAttribute("currentIntervention", currentIntervention);       
     }
