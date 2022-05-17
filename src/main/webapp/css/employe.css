@@ -1,0 +1,75 @@
+#profile {
+    height: 100vh;
+    max-height: 100vh;
+}
+
+#map { height: 600px; width: 600px }
+
+#profile-name {
+    padding: 20px;
+}
+
+.profile-header {
+    max-height: 75px;
+    margin-right: 20px;
+    margin-top: 5px;
+}
+
+.profile-header h1 {
+    float: left;
+
+}
+.profile-header img {
+    float: right;
+    max-height: 75px;
+}
+
+.information-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 10;
+}
+
+.chart-wrapper {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.content__chart {
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.tile {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+    padding: 20px;
+    margin: 20px;
+}
+
+.current-intervention {
+    background-color: #F5F7F8;
+}
+.statistics {
+    background-color: #F5F7F8;
+}
+
+.intervention {
+    background-color: #F5F7F8;
+    margin-top: 2em;
+}
+
+
+.personal_data {
+    background-color: #6563FF;
+    flex-grow: 1;
+}
+.personal_data > h2, .personal_data > p {
+    color: #F5F7F8;
+}

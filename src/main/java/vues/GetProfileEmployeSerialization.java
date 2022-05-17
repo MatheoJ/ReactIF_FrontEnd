@@ -127,7 +127,9 @@ public class GetProfileEmployeSerialization extends Serialization {
         jsonEmploye.addProperty("nom", employe.getNom());
         jsonEmploye.addProperty("prenom", employe.getPrenom());
         jsonEmploye.addProperty("mail", employe.getMail());
-        container.add("client", jsonEmploye);
+        jsonEmploye.addProperty("phone", employe.getTelephone());
+        jsonEmploye.addProperty("agence", employe.getAgence().getAdresse());
+        container.add("employe", jsonEmploye);
         container.addProperty("distance",(Double) request.getAttribute("distance"));
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
