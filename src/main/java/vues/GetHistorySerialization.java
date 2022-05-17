@@ -15,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import metier.modele.Client;
 import metier.modele.Intervention;
 import metier.modele.InterventionAnimal;
 import metier.modele.InterventionLivraison;
@@ -29,47 +28,50 @@ public class GetHistorySerialization extends Serialization {
     @Override
     public void appliquer(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        List<Intervention> interventionList = (List<Intervention>)request.getAttribute("interventionList");
+        // Json wrapper
+        List<Intervention> interventionList = (List<Intervention>) request.getAttribute("interventionList");
         Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-        
+
         JsonObject container = new JsonObject();
         JsonArray interventionArray = new JsonArray();
-        
-        for (Intervention i : interventionList){
-            JsonObject jsonI = new JsonObject();
-            jsonI.addProperty("type", i.getType());        
+
+        for (Intervention i : interventionList) {
+            JsonObject jsonIntervention = new JsonObject();
+            jsonIntervention.addProperty("type", i.getType());
             String pattern = "dd/MM/yyyy";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            jsonI.addProperty("date", simpleDateFormat.format(i.getDateDemande()));
-            jsonI.addProperty("id", i.getId());
-            jsonI.addProperty("description", i.getDescription());
-            jsonI.addProperty("adresse", i.getClient().getAdresse());
-            jsonI.addProperty("etat", i.getEtat());
-            
+            jsonIntervention.addProperty("start_date", simpleDateFormat.format(i.getDateDemande()));
+            if (i.getEtat().equals("Terminé")) {
+                jsonIntervention.addProperty("end_date", simpleDateFormat.format(i.getDateCloture()));
+            }
+            jsonIntervention.addProperty("id", i.getId());
+            jsonIntervention.addProperty("description", i.getDescription());
+            jsonIntervention.addProperty("address", i.getClient().getAdresse());
+            jsonIntervention.addProperty("state", i.getEtat());
+            jsonIntervention.addProperty("status", i.getStatut());
+
             JsonObject jsonEmployee = new JsonObject();
             jsonEmployee.addProperty("last_name", i.getEmploye().getNom());
             jsonEmployee.addProperty("first_name", i.getEmploye().getPrenom());
-            jsonI.add("employee", jsonEmployee);
+            jsonIntervention.add("employee", jsonEmployee);
 
-            switch (i.getType())
-            {
+            switch (i.getType()) {
                 case "Animal":
-                    jsonI.addProperty("species", ((InterventionAnimal) i).getEspeceAnimal());
+                    jsonIntervention.addProperty("species", ((InterventionAnimal) i).getEspeceAnimal());
                     break;
                 case "Incident":
                     // EMPTY
                     break;
                 case "Livraison":
-                    jsonI.addProperty("object", ((InterventionLivraison) i).getObjet());
-                    jsonI.addProperty("enterprise", ((InterventionLivraison) i).getEntreprise());
+                    jsonIntervention.addProperty("object", ((InterventionLivraison) i).getObjet());
+                    jsonIntervention.addProperty("company", ((InterventionLivraison) i).getEntreprise());
                     break;
             }
-            interventionArray.add(jsonI);
+            interventionArray.add(jsonIntervention);
         }
-        
-        
+
         container.add("interventionList", interventionArray);
-        
+
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
         out.println(gson.toJson(container));

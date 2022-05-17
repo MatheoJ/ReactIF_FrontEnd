@@ -29,10 +29,10 @@ public class AuthentificateClientAction extends Action {
         Client client = service.authentifierClient(login, password);
         
         if(client==null){
-            request.setAttribute("connexion",false);
+            request.setAttribute("connection",false);
         }
         else{
-            request.setAttribute("connexion",true);
+            request.setAttribute("connection",true);
             request.setAttribute("client",client);
         }       
         

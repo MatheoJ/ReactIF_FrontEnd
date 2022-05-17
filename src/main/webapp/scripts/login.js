@@ -14,10 +14,10 @@ $(document).ready( function () {
         }        
     });
     
-    $('#bouton-connexion').on( 'click', function () { // Fonction appelée lors du clic sur le bouton
+    $('#bouton-connection').on( 'click', function () { // Fonction appelée lors du clic sur le bouton
 
-        console.log("clic sur le bouton de connexion"); // LOG dans Console Javascript
-        $('#notification').html("Connexion..."); // Message pour le paragraphe de notification
+        console.log("clic sur le bouton de connection"); // LOG dans Console Javascript
+        $('#notification').html("Connection..."); // Message pour le paragraphe de notification
 
         // Récupération de la valeur des champs du formulaire
         var champLogin = $('#champ-login').val();
@@ -42,10 +42,10 @@ $(document).ready( function () {
         })
         .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
             console.log('Response',response); // LOG dans Console Javascript
-            if (response.connexion) {
-                $('#notification').html("Connexion OK");  // Message pour le paragraphe de notification
+            if (response.connection) {
+                $('#notification').html("Connection OK");  // Message pour le paragraphe de notification
                 // TODO: afficher les informations du client dans la notification
-                // Exemple: Connexion de Ada Lovelace (ID 1)
+                // Exemple: Connection de Ada Lovelace (ID 1)
                 
                 if(mode==="Client"){
                     window.location="./client.html"
@@ -55,7 +55,7 @@ $(document).ready( function () {
                 }
             }
             else {
-                $('#notification').html("Erreur de Connexion"); // Message pour le paragraphe de notification
+                $('#notification').html("Erreur de Connection"); // Message pour le paragraphe de notification
             }
         })
         .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX

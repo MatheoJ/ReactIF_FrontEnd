@@ -25,12 +25,12 @@ public class AuthentificateEmployeSerialization extends Serialization {
     @Override
     public void appliquer(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
-        Boolean connexion =(Boolean) request.getAttribute("connexion");
+        Boolean connection =(Boolean) request.getAttribute("connection");
         
         JsonObject container = new JsonObject();
         Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-        container.addProperty("connexion", connexion);
-        if (connexion == true){
+        container.addProperty("connection", connection);
+        if (connection == true){
             JsonObject jsonEmploye = new JsonObject();
             Employe employe =(Employe) request.getAttribute("employe");
             jsonEmploye.addProperty("id",employe.getId());
