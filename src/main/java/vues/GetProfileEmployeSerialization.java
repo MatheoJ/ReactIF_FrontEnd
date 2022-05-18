@@ -49,10 +49,10 @@ public class GetProfileEmployeSerialization extends Serialization {
             jsonCurrentIntervention.addProperty("description", currentIntervention.getDescription());
             jsonCurrentIntervention.addProperty("adresse", currentIntervention.getClient().getAdresse());
             
-            JsonObject jsonEmployee = new JsonObject();
-            jsonEmployee.addProperty("last_name", currentIntervention.getEmploye().getNom());
-            jsonEmployee.addProperty("first_name", currentIntervention.getEmploye().getPrenom());
-            jsonCurrentIntervention.add("employee", jsonEmployee);
+            JsonObject jsonClient = new JsonObject();
+            jsonClient.addProperty("last_name", currentIntervention.getClient().getNom());
+            jsonClient.addProperty("first_name", currentIntervention.getClient().getPrenom());
+            jsonCurrentIntervention.add("client", jsonClient);
 
             switch (currentIntervention.getType())
             {
@@ -85,10 +85,10 @@ public class GetProfileEmployeSerialization extends Serialization {
             jsonI.addProperty("adresse", i.getClient().getAdresse());
             jsonI.addProperty("etat", i.getEtat());
             
-            JsonObject jsonEmployee = new JsonObject();
-            jsonEmployee.addProperty("last_name", i.getEmploye().getNom());
-            jsonEmployee.addProperty("first_name", i.getEmploye().getPrenom());
-            jsonI.add("employee", jsonEmployee);
+            JsonObject jsonClient = new JsonObject();
+            jsonClient.addProperty("last_name", i.getClient().getNom());
+            jsonClient.addProperty("first_name", i.getClient().getPrenom());
+            jsonI.add("client", jsonClient);
 
             switch (i.getType())
             {
@@ -133,6 +133,8 @@ public class GetProfileEmployeSerialization extends Serialization {
         container.addProperty("distance",(Double) request.getAttribute("distance"));
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        System.out.println("laaaaaaa");
+                   
         out.println(gson.toJson(container));
         out.close();
     }

@@ -1,7 +1,13 @@
-#profile {
-    height: 100vh;
-    max-height: 100vh;
+#profileEmploye {
+    height: 180vh;
+    max-height: 180vh;
 }
+
+/*#clotureButton{
+    position: absolute;
+    right:    0;
+    bottom:   0;
+}*/
 
 #map { height: 600px; width: 600px }
 

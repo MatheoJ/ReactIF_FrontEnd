@@ -11,7 +11,9 @@ import Actions.Action;
 import Actions.AuthentificateClientAction;
 import Actions.AddInterventionAction;
 import Actions.AuthentificateEmployeAction;
+import Actions.EndInterventionAction;
 import Actions.GetHistoryAction;
+import Actions.GetHistoryEmployeAction;
 import Actions.GetProfileAction;
 import Actions.GetProfileEmployeAction;
 import Actions.SignUpClientAction;
@@ -28,7 +30,9 @@ import metier.modele.Employe;
 import metier.service.Service;
 import vues.AuthentificateClientSerialization;
 import vues.AuthentificateEmployeSerialization;
+import vues.EndInterventionSerialization;
 import vues.GetErrorSerialization;
+import vues.GetHistoryEmployeSerialization;
 import vues.GetHistorySerialization;
 import vues.GetProfileEmployeSerialization;
 import vues.GetProfileSerialization;
@@ -135,8 +139,12 @@ public class ActionServlet extends HttpServlet {
                 if (checkIsConnectedEmploye(session)) {
                     request.setAttribute("error", Boolean.FALSE);
                     request.setAttribute("employe", (Employe) session.getAttribute("employe"));
+                    
+                    System.out.println("************************************************************");
+                    System.out.println(((Employe) session.getAttribute("employe")).getPrenom());
                     Action action = new GetProfileEmployeAction(service);
                     action.executer(request);
+                    System.out.println("ouiiiiii");
                     Serialization serialisation = new GetProfileEmployeSerialization();
                     serialisation.appliquer(request, response);
                 } else {
@@ -162,6 +170,21 @@ public class ActionServlet extends HttpServlet {
                 }
                 break;
             }
+            case "historyEmploye": {
+                if (checkIsConnectedEmploye(session)) {
+                    request.setAttribute("error", Boolean.FALSE);
+                    request.setAttribute("employe", (Employe) session.getAttribute("employe"));
+                    Action action = new GetHistoryEmployeAction(service);
+                    action.executer(request);
+                    Serialization serialisation = new GetHistoryEmployeSerialization();
+                    serialisation.appliquer(request, response);
+                } else {
+                    request.setAttribute("error", Boolean.TRUE);
+                    request.setAttribute("errorMessage", "You must be connected");
+                    sendError(request, response);
+                }
+                break;
+            }
             case "intervention-delivery": {
                 // EMPTY CASE
             }
@@ -174,6 +197,21 @@ public class ActionServlet extends HttpServlet {
                     Action action = new AddInterventionAction(service);
                     action.executer(request);
                     AddInterventionSerialization serialisation = new AddInterventionSerialization();
+                    serialisation.appliquer(request, response);
+                } else {
+                    request.setAttribute("error", Boolean.TRUE);
+                    request.setAttribute("errorMessage", "You must be connected");
+                    sendError(request, response);
+                }
+                break;
+            }
+            case "endIntervention": {
+                if (checkIsConnectedEmploye(session)) {
+                    request.setAttribute("error", Boolean.FALSE);
+                    request.setAttribute("employe", (Employe) session.getAttribute("employe"));
+                    Action action = new EndInterventionAction(service);
+                    action.executer(request);
+                    Serialization serialisation = new EndInterventionSerialization();
                     serialisation.appliquer(request, response);
                 } else {
                     request.setAttribute("error", Boolean.TRUE);

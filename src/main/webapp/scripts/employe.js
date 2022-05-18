@@ -3,6 +3,8 @@ var interventionList = null;
 var latTab = null;
 var lngTab = null;
 
+var oldDiv = "profileEmploye";
+
 
 function makeInfoWindow(title) {
     return new google.maps.InfoWindow({
@@ -107,7 +109,7 @@ $(document).ready(function () {
                 .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
                     console.log('Response', response); // LOG dans Console Javascript
                     if (!response.error) {
-                        window.history.pushState("", "", href);
+                        
                     } else {
                     }
                 })
@@ -118,6 +120,90 @@ $(document).ready(function () {
                 .always(function () { // Fonction toujours appelée
 
                 });
+    });
+    $(".redirect-link").on("click", function (i) {
+        i.preventDefault();
+        let todo = $(this).attr('data-todo');
+        
+        console.log(todo);
+        // Appel AJAX
+        let href = $(this).attr('href');
+        // If the link isn't empty
+        if (href !== "#") {
+            // Appel AJAX
+            console.log("on arrive la");
+            $.ajax({
+                url: '../ActionServlet',
+                method: 'POST',
+                data: {
+                    todo: todo
+                },
+                dataType: 'json'
+            })
+                    .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                        console.log('Response', response); // LOG dans Console Javascript
+                        if (response.error) {
+                            console.log('Error', response.error); // LOG dans Console Javascript
+                            alert("Erreur lors de l'appel AJAX\n" + response.error);
+                            
+                        } else {
+                            togglePanel(todo);
+                            switch (todo)
+                            {
+                                case "profileEmploye":
+                                    // Destroy previous charts
+                                    fillProfile(response);
+                                    break;
+                                case "historyEmploye":
+                                    fillHistory(response);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    })
+                    .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                        console.log('Error', error); // LOG dans Console Javascript
+                        alert("Erreur lors de l'appel AJAX");
+                    })
+                    .always(function () { // Fonction toujours appelée
+
+                    });
+        }
+
+
+    });
+    $('#clotureButton').on( 'click', function () { // Fonction appelée lors du clic sur le bouton
+        
+        var statut = $('#selectStatut').val();
+        var commentaire = $('#commentText').val();
+        $.ajax({
+                url: '../ActionServlet',
+                method: 'POST',
+                data: {
+                    todo: "endIntervention",
+                    statut: statut,
+                    commentaire: commentaire
+                },
+                dataType: 'json'
+            })
+        .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
+            console.log('Response',response); // LOG dans Console Javascript
+            if (response.endSuccess) {
+                location.reload();
+            }
+            else {
+                
+            }
+        })
+        .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+            console.log('Error',error); // LOG dans Console Javascript
+            alert("Erreur lors de l'appel AJAX");
+        })
+        .always( function () { // Fonction toujours appelée
+
+        }); 
+        
     });
    
 });
@@ -130,12 +216,14 @@ function fillProfile(response)
     document.getElementById("phone_number").innerHTML = response.employe.phone;
     document.getElementById("agence").innerHTML = response.employe.agence;
     document.getElementById("email").innerHTML = response.employe.mail;
+    document.getElementById("distance").innerHTML = response.distance;
     
     
-    if (response.intervention.exists) {
-        document.getElementById("current-intervention-status").innerHTML = "Intervention n°" + response.intervention.id + " en cours ...";
+    if (response.currentIntervention.exists) {
+        document.getElementById("current-intervention-status").innerHTML = "Intervention n°" + response.currentIntervention.id + " en cours ...";
+        document.getElementById("coltureIntervention").style.display = "block";
         // Get ul list
-        let ul = $("#current-intervention-list");
+        let ul = document.getElementById("current-intervention-list");
         // Clear ul list
         ul.innerHtml = "";
         // Init ul list
@@ -155,20 +243,25 @@ function fillProfile(response)
         li.innerHTML = content;
         ul.appendChild(li);
         li = document.createElement("li");
-        content = "<span class='bold'>Employé:</span>" + response.currentIntervention.employee;
+        content = "<span class='bold'>Client:</span>" + response.currentIntervention.client.first_name + " " + response.currentIntervention.client.last_name.toUpperCase();
         li.appendChild(document.createTextNode(""));
         li.innerHTML = content;
         ul.appendChild(li);
-        switch (response.intervention.type)
+        li = document.createElement("li");
+        content = "<span class='bold'>Adresse:</span>" + response.currentIntervention.adresse;
+        li.appendChild(document.createTextNode(""));
+        li.innerHTML = content;
+        ul.appendChild(li);
+        switch (response.currentIntervention.type)
         {
-            case "Animal":
+            case "Animale":
                 li = document.createElement("li");
                 content = "<span class='bold'>Type:</span>" + response.currentIntervention.type;
                 li.appendChild(document.createTextNode(""));
                 li.innerHTML = content;
                 ul.appendChild(li);
                 break;
-            case "Delivery":
+            case "Livraison":
                 li = document.createElement("li");
                 content = "<span class='bold'>Objet:</span>" + response.currentIntervention.object;
                 li.appendChild(document.createTextNode(""));
@@ -183,8 +276,109 @@ function fillProfile(response)
             case "Incident":
                 break;
         }
+        
     } else {
         $("#current-intervention-status").textContent = "Aucune intervention en cours";
     }
 }
 
+
+function fillHistory(response)
+{
+    // Get table
+    let table = document.getElementById("history-table");
+    // Clear table (except the first table row)
+    $("#history-table").find("tr:gt(0)").remove();
+    // Fill table
+    response.interventionList.forEach(function (intervention) {
+        let tr = document.createElement("tr");
+
+        // TYPE
+        let th = document.createElement("th");
+        let content = "<span class='bold'>" + intervention.type + "</span>";
+        th.appendChild(document.createTextNode(""));
+        th.innerHTML = content;
+        tr.appendChild(th);
+        // START_DATE
+        th = document.createElement("th");
+        content = "<span class='grey'>" + intervention.start_date + "</span>";
+        th.appendChild(document.createTextNode(""));
+        th.innerHTML = content;
+        tr.appendChild(th);
+        // STATE
+        th = document.createElement("th");
+        content = "<span class='bold'>" + intervention.state + "</span>";
+        th.appendChild(document.createTextNode(""));
+        th.innerHTML = content;
+        tr.appendChild(th);
+        // END_DATE
+        th = document.createElement("th");
+        if (intervention.state === "Terminé") {
+            content = "<span class='grey'>" + intervention.date + "</span>";
+        } else {
+            content = "<span class='not-applicable'>N/A</span>";
+        }
+        th.appendChild(document.createTextNode(""));
+        th.innerHTML = content;
+        tr.appendChild(th);
+        // STATUS
+        th = document.createElement("th");
+        if (intervention.status === "Succès") {
+            content = "<span class='green'>" + intervention.status + "</span>";
+        } else {
+            content = "<span class='red'>" + intervention.status + "</span>";
+        }
+        th.appendChild(document.createTextNode(""));
+        th.innerHTML = content;
+        tr.appendChild(th);
+        // Client
+        th = document.createElement("th");
+        content = "<span class='bold'>" + intervention.client.first_name + " " + intervention.client.last_name.toUpperCase() + "</span>";
+        th.appendChild(document.createTextNode(""));
+        th.innerHTML = content;
+        tr.appendChild(th);
+        // ANIMAL
+        th = document.createElement("th");
+        if (intervention.type === "Animal") {
+            content = "<span class='bold'>" + intervention.species + "</span>";
+        } else {
+            content = "<span class='not-applicable'>N/A</span>";
+        }
+        th.appendChild(document.createTextNode(""));
+        th.innerHTML = content;
+        tr.appendChild(th);
+        // COMPANY
+        th = document.createElement("th");
+        if (intervention.type === "Livraison") {
+            content = "<span class='bold'>" + intervention.company + "</span>";
+        } else {
+            content = "<span class='not-applicable'>N/A</span>";
+        }
+        th.appendChild(document.createTextNode(""));
+        th.innerHTML = content;
+        tr.appendChild(th);
+        // OBJECT
+        th = document.createElement("th");
+        if (intervention.type === "Livraison") {
+            content = "<span class='bold'>" + intervention.object + "</span>";
+        } else {
+            content = "<span class='not-applicable'>N/A</span>";
+        }
+        th.appendChild(document.createTextNode(""));
+        th.innerHTML = content;
+        tr.appendChild(th);  
+        
+
+        table.appendChild(tr);
+    });
+}
+
+function togglePanel(newDiv)
+{
+    if (oldDiv !== null)
+    {
+        document.getElementById(oldDiv).style.display = "none";
+    }
+    oldDiv = newDiv;
+    document.getElementById(newDiv).style.display = "flex";
+}

@@ -39,13 +39,13 @@
             <p class="title-menu">REACT'IF</p>
             <ul class="sidebar-menu">
                 <li><span class="nav-section-title"></span></li>
-                <li><a class="box redirect-link" href="/profile" data-todo="profile"><img class="icon" src="../images/user-icon.svg"  alt="user image" /><span>Profil</span></a></li>
-                <li><a class="box redirect-link" href="/history" data-todo="history"><img class="icon" src="../images/history.svg"  alt="user image" /><span>Historique des interventions</span></a></li>
+                <li><a class="box redirect-link" href="/profile" data-todo="profileEmploye"><img class="icon" src="../images/user-icon.svg"  alt="user image" /><span>Profil</span></a></li>
+                <li><a class="box redirect-link" href="/history" data-todo="historyEmploye"><img class="icon" src="../images/history.svg"  alt="user image" /><span>Historique des interventions</span></a></li>
                 
             </ul>
         </nav>
         <div id="content">
-            <div id="profile">
+            <div id="profileEmploye", style="display: flex;">
                 <div class="profile-header">
                     <h1 id="profile-name"></h1>
                     <img src="../images/user-profile.svg"  alt="user image" />
@@ -54,35 +54,54 @@
                     <h2 id="current-intervention-status">Aucune intervention en cours</h2>
                     <ul id="current-intervention-list">
                     </ul>
-                </div>
-                <div class="tile statistics">
-                        <h2>Distance totale parcourue ajourd'hui</h2>
-                        <span id="distance">0</span>
-                        <span id="kms">kms</span>
-                        <br />
-                 </div>
-                
-                <div class="tile personal_data">
-                        <h2>Informations personnelles</h2>
-                        <p style="margin-top: 3em;">
-                            <span class="bold">Téléphone :</span>
-                            <br />
-                            <span id="phone_number"></span>
-                            <br />
-                            <br />
-                            <span class="bold">Agence :</span>
-                            <br />
-                            <span id="agence"></span>
-                            <br />
-                            <br />
-                            <span class="bold">Adresse électronique :</span>
-                            <br />
-                            <span id="email"></span>
-                            <br />
-                            <br />                            
-                        </p>
+                    <div id="coltureIntervention", style="display: none;">                        
+                        <div class="pair">
+                            <span class="bold">Commentaire:</span>
+                            <textarea class="rounded-input" id="commentText" name="cloturer" 
+                                      rows="5" cols="33"></textarea>
+                        </div>
+                        <div class="pair">
+                            <span class="bold">Statut:</span>
+                            <select id="selectStatut">
+                                <option value="">--Choisissez le statut--</option>
+                                <option value="success">Succés</option>
+                                <option value="failure">Echec</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="rounded-button" id="clotureButton" data-todo="intervention-animal">Cloturer</button>
+                        </div>
                     </div>
-                
+                </div>
+                <div class="information-wrapper">
+                    <div class="tile statistics">
+                            <h2>Distance totale parcourue ajourd'hui</h2>
+                            <span id="distance">0</span>
+                            <span id="kms">kms</span>
+                            <br />
+                     </div>
+
+                    <div class="tile personal_data">
+                            <h2>Informations personnelles</h2>
+                            <p style="margin-top: 3em;">
+                                <span class="bold">Téléphone :</span>
+                                <br />
+                                <span id="phone_number"></span>
+                                <br />
+                                <br />
+                                <span class="bold">Agence :</span>
+                                <br />
+                                <span id="agence"></span>
+                                <br />
+                                <br />
+                                <span class="bold">Adresse électronique :</span>
+                                <br />
+                                <span id="email"></span>
+                                <br />
+                                <br />                            
+                            </p>
+                    </div>
+                </div>
                 
                 <div class="tile mapI">
                         <h2>Carte des interventions</h2>
@@ -92,6 +111,24 @@
                  </div>
                 
                 
+            </div>
+            <div id="historyEmploye" style="display: none;">
+                <div class="tile history">
+                    <h2>Historique des interventions</h2>
+                    <table class="table" id="history-table">
+                        <tr>
+                            <th>Type</th>
+                            <th>Date demande</th>
+                            <th>Etat</th>
+                            <th>Date clôture</th>
+                            <th>Statut</th>
+                            <th>Client</th>
+                            <th>Animal</th>
+                            <th>Entreprise</th>
+                            <th>Objet</th>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMqXyR2llzWs1F_K147AwbfA89XouummE&callback=initMap">
