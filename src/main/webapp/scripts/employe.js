@@ -228,27 +228,27 @@ function fillProfile(response)
         ul.innerHtml = "";
         // Init ul list
         let li = document.createElement("li");
-        let content = "<span class='bold'>Type:</span>" + response.currentIntervention.type;
+        let content = "<span class='bold'>Type: </span>" + response.currentIntervention.type;
         li.appendChild(document.createTextNode(""));
         li.innerHTML = content;
         ul.appendChild(li);
         li = document.createElement("li");
-        content = "<span class='bold'>Date de la demande:</span>" + response.currentIntervention.date;
+        content = "<span class='bold'>Date de la demande: </span>" + response.currentIntervention.date;
         li.appendChild(document.createTextNode(""));
         li.innerHTML = content;
         ul.appendChild(li);
         li = document.createElement("li");
-        content = "<span class='bold'>Descritpion:</span>" + response.currentIntervention.description;
+        content = "<span class='bold'>Descritpion: </span>" + response.currentIntervention.description;
         li.appendChild(document.createTextNode(""));
         li.innerHTML = content;
         ul.appendChild(li);
         li = document.createElement("li");
-        content = "<span class='bold'>Client:</span>" + response.currentIntervention.client.first_name + " " + response.currentIntervention.client.last_name.toUpperCase();
+        content = "<span class='bold'>Client: </span>" + response.currentIntervention.client.first_name + " " + response.currentIntervention.client.last_name.toUpperCase();
         li.appendChild(document.createTextNode(""));
         li.innerHTML = content;
         ul.appendChild(li);
         li = document.createElement("li");
-        content = "<span class='bold'>Adresse:</span>" + response.currentIntervention.adresse;
+        content = "<span class='bold'>Adresse: </span>" + response.currentIntervention.adresse;
         li.appendChild(document.createTextNode(""));
         li.innerHTML = content;
         ul.appendChild(li);
@@ -256,19 +256,19 @@ function fillProfile(response)
         {
             case "Animale":
                 li = document.createElement("li");
-                content = "<span class='bold'>Type:</span>" + response.currentIntervention.type;
+                content = "<span class='bold'>Type: </span>" + response.currentIntervention.type;
                 li.appendChild(document.createTextNode(""));
                 li.innerHTML = content;
                 ul.appendChild(li);
                 break;
             case "Livraison":
                 li = document.createElement("li");
-                content = "<span class='bold'>Objet:</span>" + response.currentIntervention.object;
+                content = "<span class='bold'>Objet: </span>" + response.currentIntervention.object;
                 li.appendChild(document.createTextNode(""));
                 li.innerHTML = content;
                 ul.appendChild(li);
                 li = document.createElement("li");
-                content = "<span class='bold'>Entreprise:</span>" + response.currentIntervention.company;
+                content = "<span class='bold'>Entreprise: </span>" + response.currentIntervention.company;
                 li.appendChild(document.createTextNode(""));
                 li.innerHTML = content;
                 ul.appendChild(li);

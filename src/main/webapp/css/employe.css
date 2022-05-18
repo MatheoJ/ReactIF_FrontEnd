@@ -11,6 +11,10 @@
 
 #map { height: 600px; width: 600px }
 
+li{
+    margin: 10px 0;
+}
+
 #profile-name {
     padding: 20px;
 }
