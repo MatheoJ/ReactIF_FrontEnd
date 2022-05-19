@@ -38,23 +38,42 @@ function generateMarkers() {
     var infowindow = makeInfoWindow('');
 
    
-    var j =0
+    
     for (var i in interventionList) {
-
-        var iconImage = null; // marker par défaut              
+        console.log(i);
+        console.log(interventionList.length);
+        var iconImage = null; // marker par défaut   
+        
+        //Si on est dans les dernière pair de coordonnées alors ce sont celle de l'agence 
+        
         var marker = new google.maps.Marker({
-            map: googleMapInstance,
-            position: {lat: latTab[j], lng: lngTab[j]},
-            title: 'Intervention #' + interventionList[i].id,
-            icon: iconImage
+                map: googleMapInstance,
+                position: {lat: latTab[i], lng: lngTab[i]},
+                title: 'Intervention #' + interventionList[i].id,
+                icon: iconImage
         });
-
         attachInfoWindow(
-                marker, infowindow,
-                '<div><strong><a href="./endroit.html?' + j + '">Intervention #' + interventionList[i].id + '</a></strong><br/>Ceci est la position de l\'intervention ' + interventionList[i].id + '<br/>' + 'Incroyable !' + '</div>'
-                );
-        j++;
+            marker, infowindow,
+            '<div><strong><a ' + i + '">Intervention #' + interventionList[i].id + '</a></strong><br/>Ceci est la position de l\'intervention ' + interventionList[i].id  + '</div>'
+        );
+        
+        
+        
     }
+    
+    var j=interventionList.length;
+    
+    marker = new google.maps.Marker({
+                map: googleMapInstance,
+                position: {lat: latTab[j], lng: lngTab[j]},
+                title: 'Angence',
+                icon: {url: '../images/home.png', scaledSize: new google.maps.Size(32, 32)}
+            });
+            attachInfoWindow(
+                marker, infowindow,
+                '<div><strong><a ' + j + '">Agence' + '</a></strong><br/>Ceci est la position de l\'agence ' + '</div>'
+    );
+    
 
 }
 

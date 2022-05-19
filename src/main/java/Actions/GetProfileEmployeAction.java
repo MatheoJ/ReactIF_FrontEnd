@@ -54,15 +54,20 @@ public class GetProfileEmployeAction extends Action {
         
         Double distance = service.calculerDistanceParcourue(employe, date, date2);
         
-        double []lat = new double[interventionList.size()];
-        double []lng = new double[interventionList.size()];
+        double []lat = new double[interventionList.size()+1];
+        double []lng = new double[interventionList.size()+1];
         int j=0;
         for (Intervention i : interventionList){
-            LatLng coordsAgence = GeoNetApi.getLatLng(employe.getAgence().getAdresse());
+            LatLng coordsAgence = GeoNetApi.getLatLng(i.getClient().getAdresse());
             lat[j]=coordsAgence.lat;
             lng[j]=coordsAgence.lng;
             j++;
         }
+        
+        LatLng coordsAgence = GeoNetApi.getLatLng(employe.getAgence().getAdresse());
+        lat[j]=coordsAgence.lat;
+        lng[j]=coordsAgence.lng;
+        
         
         request.setAttribute("lat", lat);
         request.setAttribute("lng", lng);

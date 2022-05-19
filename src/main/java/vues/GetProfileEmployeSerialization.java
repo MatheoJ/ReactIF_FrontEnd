@@ -111,7 +111,7 @@ public class GetProfileEmployeSerialization extends Serialization {
         double[]lat = (double[])request.getAttribute("lat");
         double[]lng = (double[])request.getAttribute("lng");
         
-        for (int i =0; i<interventionList.size();i++){
+        for (int i =0; i<(interventionList.size()+1);i++){
             jsonLat.add(lat[i]);
             jsonLng.add(lng[i]);
         }        
