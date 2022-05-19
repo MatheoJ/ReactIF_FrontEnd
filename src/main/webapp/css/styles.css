@@ -76,11 +76,12 @@ nav {
 .grey {
     color: #7f8c8d;
 }
+
 #content {
     height: 100vh;
     flex-grow: 1;
     flex: 1;
-    overflow-y: hidden;
+    overflow-y: scroll;
 }
 
 #content > * {

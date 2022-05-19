@@ -7,10 +7,12 @@ package vues;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import metier.modele.Client;
@@ -31,39 +33,46 @@ public class GetProfileSerialization extends Serialization {
         JsonObject container = new JsonObject();
         Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
 
-        JsonObject jsonCurrentIntervention = new JsonObject();
-        Intervention currentIntervention = (Intervention) request.getAttribute("currentIntervention");
-        jsonCurrentIntervention.addProperty("exists", (currentIntervention != null));
-        if (currentIntervention != null) {
+        List<Intervention> currentInterventionList = (List<Intervention>) request.getAttribute("current_intervention_list");
+        JsonArray currentInterventionArray = new JsonArray();
+        container.addProperty("current_intervention_exists",(currentInterventionList!=null && !currentInterventionList.isEmpty()));
 
-            jsonCurrentIntervention.addProperty("type", currentIntervention.getType());
+        for (Intervention i : currentInterventionList) {
+            JsonObject jsonIntervention = new JsonObject();
+            jsonIntervention.addProperty("type", i.getType());
             String pattern = "dd/MM/yyyy";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            jsonCurrentIntervention.addProperty("date", simpleDateFormat.format(currentIntervention.getDateDemande()));
-            jsonCurrentIntervention.addProperty("id", currentIntervention.getId());
-            jsonCurrentIntervention.addProperty("description", currentIntervention.getDescription());
+            jsonIntervention.addProperty("start_date", simpleDateFormat.format(i.getDateDemande()));
+            if (i.getEtat().equals("Terminé")) {
+                jsonIntervention.addProperty("end_date", simpleDateFormat.format(i.getDateCloture()));
+            }
+            jsonIntervention.addProperty("id", i.getId());
+            jsonIntervention.addProperty("description", i.getDescription());
+            jsonIntervention.addProperty("address", i.getClient().getAdresse());
+            jsonIntervention.addProperty("state", i.getEtat());
+            jsonIntervention.addProperty("status", i.getStatut());
 
             JsonObject jsonEmployee = new JsonObject();
-            jsonEmployee.addProperty("last_name", currentIntervention.getEmploye().getNom());
-            jsonEmployee.addProperty("first_name", currentIntervention.getEmploye().getPrenom());
-            jsonCurrentIntervention.add("employee", jsonEmployee);
+            jsonEmployee.addProperty("last_name", i.getEmploye().getNom());
+            jsonEmployee.addProperty("first_name", i.getEmploye().getPrenom());
+            jsonIntervention.add("employee", jsonEmployee);
 
-            switch (currentIntervention.getType()) {
+            switch (i.getType()) {
                 case "Animal":
-                    jsonCurrentIntervention.addProperty("species", ((InterventionAnimal) currentIntervention).getEspeceAnimal());
+                    jsonIntervention.addProperty("species", ((InterventionAnimal) i).getEspeceAnimal());
                     break;
                 case "Incident":
                     // EMPTY
                     break;
                 case "Livraison":
-                    jsonCurrentIntervention.addProperty("object", ((InterventionLivraison) currentIntervention).getObjet());
-                    jsonCurrentIntervention.addProperty("company", ((InterventionLivraison) currentIntervention).getEntreprise());
+                    jsonIntervention.addProperty("object", ((InterventionLivraison) i).getObjet());
+                    jsonIntervention.addProperty("company", ((InterventionLivraison) i).getEntreprise());
                     break;
             }
-        } else {
+            currentInterventionArray.add(jsonIntervention);
         }
 
-        container.add("intervention", jsonCurrentIntervention);
+        container.add("current_intervention_list", currentInterventionArray);
 
         Boolean connection = (Boolean) request.getAttribute("connection");
         Integer nbTotal = (Integer) request.getAttribute("nbTotal");

@@ -57,7 +57,7 @@
   padding: 0.313em;
   text-align: left;
   position: relative;
-  left: calc(-0.5 * var(--circle-offset));
+  left: calc(-1 * var(--circle-offset));
 }
 
 .legend__text {

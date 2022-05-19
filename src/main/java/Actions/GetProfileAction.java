@@ -8,6 +8,7 @@ package Actions;
 import com.google.gson.JsonObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -31,12 +32,20 @@ public class GetProfileAction extends Action {
     public void executer(HttpServletRequest request) {
         Client client = (Client) request.getAttribute("client");
         
-        Intervention currentIntervention = service.recupererInterventionEnCours(client); // return null if it doesn't exist
-        List<Intervention> interventionList = service.consulterHistoriqueIntervention(client);
+        // If a client can only have one simultaneous intervention:
+        // Intervention currentIntervention = service.recupererInterventionEnCours(client); // return null if it doesn't exist
+        // Else:
         
+        List<Intervention> interventionList = service.consulterHistoriqueIntervention(client);
+        List<Intervention> currentInterventionList = new ArrayList<>();
         int nbInterventionsByType[] = new int[3];
         for (Intervention intervention: interventionList)
         {
+            if (intervention.getEtat().equals("En cours"))
+            {
+                currentInterventionList.add(intervention);
+            }
+            
             switch (intervention.getType())
             {
                 case "Animal":
@@ -51,7 +60,7 @@ public class GetProfileAction extends Action {
             }
         }
         
-        request.setAttribute("currentIntervention", currentIntervention);
+        request.setAttribute("current_intervention_list", currentInterventionList);
         request.setAttribute("nbAnimal",nbInterventionsByType[0]);
         request.setAttribute("nbIncident",nbInterventionsByType[1]);
         request.setAttribute("nbDelivery",nbInterventionsByType[2]);

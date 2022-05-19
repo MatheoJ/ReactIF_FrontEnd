@@ -5,13 +5,6 @@
  */
 package Actions;
 
-import com.google.gson.JsonObject;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import metier.modele.Client;
 import metier.modele.Intervention;
@@ -33,16 +26,20 @@ public class AddInterventionAction extends Action {
     @Override
     public void executer(HttpServletRequest request) {
         Client client = (Client) request.getAttribute("client");
-        String description = (String) request.getAttribute("description");
+        String description = (String) request.getParameter("description");
         Intervention intervention = null;
+        System.out.println(description);
         switch ((String) request.getParameter("todo")) {
             case "intervention-animal":
-                String animal = (String) request.getAttribute("species");
+                String animal = (String) request.getParameter("species");
+                System.out.println(animal);
                 intervention = new InterventionAnimal(animal, description);
                 break;
             case "intervention-delivery":
-                String object = (String) request.getAttribute("object");
-                String company = (String) request.getAttribute("company");
+                String object = (String) request.getParameter("object");
+                String company = (String) request.getParameter("company");
+                System.out.println(object);
+                System.out.println(company);
                 intervention = new InterventionLivraison(object, company, description);
                 break;
             case "intervention-incident":

@@ -34,7 +34,7 @@ public class AddInterventionSerialization extends Serialization {
         Intervention intervention = (Intervention) request.getAttribute("intervention");
         if (intervention == null) {
             container.addProperty("error", Boolean.TRUE);
-            String errorMessage = "Votre demande d'intervention a échoué\nVeuillez réessayer ultérieurement";
+            String errorMessage = "Votre demande d'intervention a échoué:\nAucun employé n'est disponible.\n\nVeuillez réessayer ultérieurement";
             container.addProperty("errorMessage", errorMessage);
         } else {
             jsonCurrentIntervention.addProperty("type", intervention.getType());

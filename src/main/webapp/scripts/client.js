@@ -67,7 +67,7 @@ function redirect(todo)
 $(document).ready(function () {
 // Appel AJAX
     redirect("profile");
-    
+
     $(".sidebar-menu > li.have-children a").on("click", function (i) {
         i.preventDefault();
         if (!$(this).parent().hasClass("active")) {
@@ -86,7 +86,7 @@ $(document).ready(function () {
         redirect(todo);
 
     });
-    
+
     $(".send-intervention").on("click", function (i) {
 // Appel AJAX
         let todo = $(this).attr('data-todo');
@@ -171,7 +171,7 @@ function fillHistory(response)
         // END_DATE
         th = document.createElement("th");
         if (intervention.state === "Terminé") {
-            content = "<span class='grey'>" + intervention.date + "</span>";
+            content = "<span class='grey'>" + intervention.end_date + "</span>";
         } else {
             content = "<span class='not-applicable'>N/A</span>";
         }
@@ -182,6 +182,8 @@ function fillHistory(response)
         th = document.createElement("th");
         if (intervention.status === "Succès") {
             content = "<span class='green'>" + intervention.status + "</span>";
+        } else if (intervention.status === null) {
+            content = "<span class='not-applicable'>N/A</span>";
         } else {
             content = "<span class='red'>" + intervention.status + "</span>";
         }
@@ -246,63 +248,99 @@ function fillProfile(response)
         {label: "Incident", count: nbIncident, color: "#f1c40f"}
     ];
     fillChart(dataset);
-    if (response.intervention.exists) {
-        document.getElementById("current-intervention-status").innerHTML = "Intervention n°" + response.intervention.id + " en cours ...";
-        // Get ul list
-        let ul = document.getElementById("current-intervention-list");
-        // Clear ul list
+    console.log(response.current_intervention_exists);
+    console.log(response.current_intervention_list.length);
+    if (response.current_intervention_exists) {
+        // If there is only one intervention
+        if (response.current_intervention_list.length === 1) {
+            document.getElementById("current-intervention-status").innerHTML = "Intervention n°" + response.intervention.id + " en cours ...";
+        } else {
+            document.getElementById("current-intervention-status").innerHTML = response.current_intervention_list.length + " interventions en cours ...";
+        }
+
+        // Get div containing ul list
+        let div = document.getElementById("current-intervention-list");
+        // Clear div
         document.getElementById("current-intervention-list").innerHTML = "";
 
-        // Init ul list
-        let li = document.createElement("li");
-        let content = "<span class='bold'>Type:</span>" + response.intervention.type;
-        li.appendChild(document.createTextNode(""));
-        li.innerHTML = content;
-        ul.appendChild(li);
-        li = document.createElement("li");
-        content = "<span class='bold'>Date de la demande:</span>" + response.intervention.date;
-        li.appendChild(document.createTextNode(""));
-        li.innerHTML = content;
-        ul.appendChild(li);
+        // Init ul list for each intervention
+        response.current_intervention_list.forEach(function (intervention) {
+            let ul = document.createElement("ul");
+            ul.className = "list";
 
-        if (response.intervention.description !== null) {
+            // If there is more than one intervention
+            let li;
+            let content;
+            if (response.current_intervention_list.length > 1) {
+                li = document.createElement("li");
+                content = "<span class='bold'>N°:</span>" + intervention.id;
+                li.appendChild(document.createTextNode(""));
+                li.innerHTML = content;
+                ul.appendChild(li);
+            } else {
+                li = document.createElement("li");
+                content = "<span class='bold'>Type:</span>" + intervention.type;
+                li.appendChild(document.createTextNode(""));
+                li.innerHTML = content;
+                ul.appendChild(li);
+            }
+            
             li = document.createElement("li");
-            content = "<span class='bold'>Description:</span>" + response.intervention.description;
+            content = "<span class='bold'>Date de la demande:</span>" + intervention.start_date;
             li.appendChild(document.createTextNode(""));
             li.innerHTML = content;
             ul.appendChild(li);
-        }
 
-        li = document.createElement("li");
-        content = "<span class='bold'>Employé:</span>" + response.intervention.employee.last_name.toUpperCase() + " " + response.intervention.employee.first_name;
-        li.appendChild(document.createTextNode(""));
-        li.innerHTML = content;
-        ul.appendChild(li);
-        switch (response.intervention.type)
-        {
-            case "Animal":
+            if (intervention.description !== null) {
                 li = document.createElement("li");
-                content = "<span class='bold'>Type:</span>" + response.intervention.type;
+                content = "<span class='bold'>Description:</span>" + intervention.description;
                 li.appendChild(document.createTextNode(""));
                 li.innerHTML = content;
                 ul.appendChild(li);
-                break;
-            case "Delivery":
-                li = document.createElement("li");
-                content = "<span class='bold'>Objet:</span>" + response.intervention.object;
-                li.appendChild(document.createTextNode(""));
-                li.innerHTML = content;
-                ul.appendChild(li);
-                li = document.createElement("li");
-                content = "<span class='bold'>Entreprise:</span>" + response.intervention.company;
-                li.appendChild(document.createTextNode(""));
-                li.innerHTML = content;
-                ul.appendChild(li);
-                break;
-            case "Incident":
-                break;
-        }
+            }
+
+            li = document.createElement("li");
+            content = "<span class='bold'>Employé:</span>" + intervention.employee.last_name.toUpperCase() + " " + intervention.employee.first_name;
+            li.appendChild(document.createTextNode(""));
+            li.innerHTML = content;
+            ul.appendChild(li);
+            
+            li = document.createElement("li");
+            content = "<span class='bold'>Type:</span>" + intervention.type;
+            li.appendChild(document.createTextNode(""));
+            li.innerHTML = content;
+            ul.appendChild(li);
+            switch (intervention.type)
+            {
+                case "Animal":
+                    li = document.createElement("li");
+                    content = "<span class='bold'>Animal:</span>" + intervention.species;
+                    li.appendChild(document.createTextNode(""));
+                    li.innerHTML = content;
+                    ul.appendChild(li);
+                    break;
+                case "Delivery":
+                    li = document.createElement("li");
+                    content = "<span class='bold'>Objet:</span>" + intervention.object;
+                    li.appendChild(document.createTextNode(""));
+                    li.innerHTML = content;
+                    ul.appendChild(li);
+                    li = document.createElement("li");
+                    content = "<span class='bold'>Entreprise:</span>" + intervention.company;
+                    li.appendChild(document.createTextNode(""));
+                    li.innerHTML = content;
+                    ul.appendChild(li);
+                    break;
+                case "Incident":
+                    break;
+            }
+
+            div.appendChild(ul);
+        });
     } else {
+        // Clear div
+        document.getElementById("current-intervention-list").innerHTML = "";
+
         $("#current-intervention-status").textContent = "Aucune intervention en cours";
     }
 }
