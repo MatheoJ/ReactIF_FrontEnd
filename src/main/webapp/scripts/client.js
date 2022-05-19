@@ -55,7 +55,7 @@ function redirect(todo)
                         .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
                             console.log('Error', error); // LOG dans Console Javascript
                             alertify.set('notifier', 'delay', 8);
-                            alertify.error("Erreur lors de l'appel AJAX: \"\n" + response.errorMessage + "\"");
+                            alertify.error("Erreur lors de l'appel AJAX. Veuillez réessayer plus tard");
                         })
                         .always(function () { // Fonction toujours appelée
 
@@ -88,7 +88,9 @@ $(document).ready(function () {
     });
 
     $(".send-intervention").on("click", function (i) {
+
 // Appel AJAX
+
         let todo = $(this).attr('data-todo');
         let data = {
             todo: todo
@@ -131,7 +133,7 @@ $(document).ready(function () {
                 .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
                     console.log('Error', error); // LOG dans Console Javascript
                     alertify.set('notifier', 'delay', 8);
-                    alertify.error("Erreur lors de l'appel AJAX: \"\n" + response.errorMessage + "\"");
+                    alertify.error("Erreur lors de l'appel AJAX. Veuillez réessayer plus tard");
                 })
                 .always(function () { // Fonction toujours appelée
 
@@ -248,12 +250,10 @@ function fillProfile(response)
         {label: "Incident", count: nbIncident, color: "#f1c40f"}
     ];
     fillChart(dataset);
-    console.log(response.current_intervention_exists);
-    console.log(response.current_intervention_list.length);
     if (response.current_intervention_exists) {
         // If there is only one intervention
         if (response.current_intervention_list.length === 1) {
-            document.getElementById("current-intervention-status").innerHTML = "Intervention n°" + response.intervention.id + " en cours ...";
+            document.getElementById("current-intervention-status").innerHTML = "Intervention n°" + response.current_intervention_list[0].id + " en cours ...";
         } else {
             document.getElementById("current-intervention-status").innerHTML = response.current_intervention_list.length + " interventions en cours ...";
         }
@@ -284,7 +284,7 @@ function fillProfile(response)
                 li.innerHTML = content;
                 ul.appendChild(li);
             }
-            
+
             li = document.createElement("li");
             content = "<span class='bold'>Date de la demande:</span>" + intervention.start_date;
             li.appendChild(document.createTextNode(""));
@@ -304,7 +304,7 @@ function fillProfile(response)
             li.appendChild(document.createTextNode(""));
             li.innerHTML = content;
             ul.appendChild(li);
-            
+
             li = document.createElement("li");
             content = "<span class='bold'>Type:</span>" + intervention.type;
             li.appendChild(document.createTextNode(""));

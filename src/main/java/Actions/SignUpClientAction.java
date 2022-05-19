@@ -18,42 +18,86 @@ import metier.service.Service;
  *
  * @author mjoseph
  */
-public class SignUpClientAction extends Action{
+public class SignUpClientAction extends Action {
 
     public SignUpClientAction(Service service) {
         super(service);
     }
 
     @Override
-    public void executer(HttpServletRequest request) {     
-        
-        String pattern = "dd/MM/yyyy";
+    public void executer(HttpServletRequest request) {
+
+        String pattern = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        
+
+        String confirmPassword = request.getParameter("confirm_password");
         String password = request.getParameter("password");
-        String firstName = request.getParameter("firstName");
-        String surName = request.getParameter("surName");
-        String mail = request.getParameter("mail");
-        String phoneNumber = request.getParameter("phoneNumber");
-        String adress = request.getParameter("adress");        
-        Date birthDate=null;
+        String firstName = request.getParameter("first_name");
+        String lastName = request.getParameter("last_name");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        String birthDateField = request.getParameter("birth_date");
+
+        boolean valid = true;
+        StringBuilder builder = new StringBuilder(10);
+        if (!password.equals(confirmPassword)) {
+            builder.append("Le mot de passe de confirmation est invalide.\n");
+            valid = false;
+        }
+        if (password.equals("")) {
+            builder.append("Veuillez renseigner un mot de passe.\n");
+            valid = false;
+        }
+        if (firstName.equals("")) {
+            builder.append("Veuillez renseigner votre prénom.\n");
+            valid = false;
+        }
+        if (lastName.equals("")) {
+            builder.append("Veuillez renseigner votre nom de famille.\n");
+            valid = false;
+        }
+        if (email.equals("")) {
+            builder.append("Veuillez renseigner votre email.\n");
+            valid = false;
+        }
+        if (phone.equals("")) {
+            builder.append("Veuillez renseigner votre numéro de téléphone.\n");
+            valid = false;
+        }
+        if (address.equals("")) {
+            builder.append("Veuillez renseigner votre adresse.\n");
+            valid = false;
+        }
+        if (birthDateField.equals("")) {
+            builder.append("Veuillez renseigner votre adresse.\n");
+            valid = false;
+        }
+
+        Date birthDate = null;
         try {
-            birthDate = simpleDateFormat.parse(request.getParameter("birthDate"));
+            birthDate = simpleDateFormat.parse(request.getParameter("birth_date"));
         } catch (ParseException ex) {
-            Logger.getLogger(SignUpClientAction.class.getName()).log(Level.SEVERE, null, ex);
+            builder.append("Date de naissance invalide.\n");
+            valid = false;
         }
-        
-        Client newClient = new Client(surName, firstName, mail, password, phoneNumber, adress, birthDate);
-        
-        Client clientCree = service.inscrireClient(newClient);
-        
-        if(clientCree==null){
-            request.setAttribute("signedUp",false);
+
+        Client clientCree = null;
+        if (valid) {
+            Client newClient = new Client(lastName, firstName, email, password, phone, address, birthDate);
+            clientCree = service.inscrireClient(newClient);
+            if (clientCree == null) {
+                builder.append("L'adresse e-mail est déjà utilisée !\n");
+            }
         }
-        else{
-            request.setAttribute("signedUp",true);
-            request.setAttribute("client",clientCree);
+
+        if (clientCree == null) {
+            request.setAttribute("error", true);
+            request.setAttribute("errorMessage", builder.toString());
+        } else {
+            request.setAttribute("error", false);
+            request.setAttribute("client", clientCree);
         }
     }
-    
+
 }

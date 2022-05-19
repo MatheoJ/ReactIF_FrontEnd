@@ -74,7 +74,7 @@ public class ActionServlet extends HttpServlet {
             String paramName = params.nextElement();
             System.out.println("Parameter Name - " + paramName + ", Value - " + request.getParameter(paramName));
         }
-        */
+         */
 
         String todo = request.getParameter("todo");
         Service service = new Service();
@@ -91,7 +91,6 @@ public class ActionServlet extends HttpServlet {
 
                 if (request.getAttribute("connection") == Boolean.TRUE) {
                     session.setAttribute("client", request.getAttribute("client"));
-                    System.out.println(request.getAttribute("client"));
                 }
 
                 break;
@@ -115,6 +114,10 @@ public class ActionServlet extends HttpServlet {
                 action.executer(request);
                 Serialization serialisation = new SignUpClientSerialisation();
                 serialisation.appliquer(request, response);
+
+                if (request.getAttribute("error") == Boolean.FALSE) {
+                    session.setAttribute("client", request.getAttribute("client"));
+                }
                 break;
             }
 
@@ -139,7 +142,7 @@ public class ActionServlet extends HttpServlet {
                 if (checkIsConnectedEmploye(session)) {
                     request.setAttribute("error", Boolean.FALSE);
                     request.setAttribute("employe", (Employe) session.getAttribute("employe"));
-                    
+
                     System.out.println("************************************************************");
                     System.out.println(((Employe) session.getAttribute("employe")).getPrenom());
                     Action action = new GetProfileEmployeAction(service);

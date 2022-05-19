@@ -1,11 +1,63 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html">
-
+<!DOCTYPE html>
+<html>
     <head>
-        <title>Sign Up</title>
+        <meta charset="UTF-8">
+        <title>Connection</title>
+        <!-- Librairie Javascript: jQuery (v3.4.1) -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="../scripts/signup.js"></script>  
+        <link rel="stylesheet" href="../css/styles.css?v=1.0" />
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.8.0/build/css/alertify.min.css" />
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/what-input/4.2.0/what-input.min.js" integrity="sha256-7wGy9IEPmo9Jk/I86siWbZFPeclfjFitAAfmvxBUc7k=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/js/foundation.min.js" crossorigin="anonymous"></script>
     </head>
-    <body id="content">
+
+
+    <body id="content" style="flex-direction: column; align-items: center; height: 100vh;">
+
+        <div class="wrapper" style="height: 100%; margin: auto;">
+            <div class="tile" style="display: flex; flex-direction: column; background-color: #F5F7F8; align-items: center; min-width: 270px; width: 20vw; margin-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                <img class="icon-big" src="../images/user-icon.svg"  alt="user image" />
+                <h2 style="color: #282828; margin-bottom: 0; margin-top: 0;">Formulaire d'inscription</h2>
+                <p style="color: #282828; margin-top: 0;">à React'If</p>
+
+                <form class="fields">
+                    <label for="last_name">Nom</label>
+                    <input class="rounded-input-small" id="last_name" type="text" value="" placeholder="Pascal" required/>
+
+                    <label for="first_name">Prénom</label>
+                    <input class="rounded-input-small" id="first_name" type="text" value="" placeholder="Alice" required/>
+
+                    <label for="email">Email</label>
+                    <input class="rounded-input-small" id="email" type="text" value="" placeholder="exemple@client.fr" required/>
+
+                    <label for="last_name">Téléphone</label>
+                    <input class="rounded-input-small" id="phone" type="tel" value="" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required/>
+
+                    <label for="address">Adresse</label>
+                    <input class="rounded-input-small" id="address" type="text" value="" placeholder="20 Av. Albert Einstein, Villeurbanne" required/>
+
+                    <label for="birth_date">Adresse</label>
+                    <input class="rounded-input-small" id="birth_date" type="date" value="2001-01-01" min="1850-01-01" required/>
+
+                    <label for="password">Mot de passe</label>
+                    <input class="rounded-input-small" id="password" type="password" required/>
+
+                    <label for="confirm_password">Confirmation du mot de passe</label>
+                    <input class="rounded-input-small" id="confirm_password" type="password" required/>
+                </form>
+
+                <button class="rounded-button" id="signup">S'inscrire</button>
+
+                <!-- Lien vers l'accueil -->
+                <p><a href="home.html">Retour à la page d'Accueil</a></p>
+            </div>
+            <img style="object-fit: cover;
+                 object-position: center; margin-top: 20px; margin-bottom: 20px; max-width: 40vw; max-height: 100%; height: auto; width: auto;" src="../images/react-if-image.png"  alt="React'If to your service" />  
+        </div>
+
     </body>
 </html>

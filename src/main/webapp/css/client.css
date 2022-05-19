@@ -52,22 +52,6 @@
     flex-direction: column;
 }
 
-.tile {
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px; /* future proofing */
-    -khtml-border-radius: 10px; /* for old Konqueror browsers */
-    padding: 20px;
-    margin: 20px;
-}
-.tile-text {
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 3em;
-    display: inline-block;
-}
-
 .current-intervention {
     background-color: #F5F7F8;
 }

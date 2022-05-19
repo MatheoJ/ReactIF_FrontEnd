@@ -54,16 +54,6 @@ li{
     flex-direction: column;
 }
 
-.tile {
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px; /* future proofing */
-    -khtml-border-radius: 10px; /* for old Konqueror browsers */
-    padding: 20px;
-    margin: 20px;
-}
-
-
 
 .current-intervention {
     background-color: #F5F7F8;
@@ -76,7 +66,6 @@ li{
     background-color: #F5F7F8;
     margin-top: 2em;
 }
-
 
 .personal_data {
     background-color: #6563FF;

@@ -6,28 +6,42 @@
         <!-- Librairie Javascript: jQuery (v3.4.1) -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="../scripts/login.js"></script>  
+        <link rel="stylesheet" href="../css/styles.css?v=1.0" />
         
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.8.0/build/css/alertify.min.css" />
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/what-input/4.2.0/what-input.min.js" integrity="sha256-7wGy9IEPmo9Jk/I86siWbZFPeclfjFitAAfmvxBUc7k=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/js/foundation.min.js" crossorigin="anonymous"></script>
     </head>
-    
-    
-    <body id="content">
 
-        <h1>Connection</h1>
 
-        <!-- Paragraphe avec id="notification" pour les messages de notification -->
-        <p id="notification">Veuillez saisir votre identifiant (adresse mail) et votre mot de passe.</p>
-        
-        <!-- Champs et Bouton de Formulaire -->
-        Identifiant: <input type="text" id="champ-login" size="40" />
-        <br/>
-        Mot de passe: <input type="password" id="champ-password" />
-        <br/>
-        <button id="bouton-connection">Connection</button>
-        <button id="bouton-mode">Passer en mode Employe</button>
-        
-        <!-- Lien vers l'accueil -->
-        <p><a href="home.html">Retour à la page d'Accueil</a></p>
-        
-        
+    <body id="content" style="flex-direction: column; align-items: center;">
+
+        <button class="rounded-button" id="bouton-mode">Passer en mode Employe</button>
+
+        <div class="wrapper" style="height: 80vh; margin: auto;">
+            <div class="tile" style="display: flex; flex-direction: column; background-color: #F5F7F8; align-items: center; min-width: 270px; width: 20vw; margin-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                <img class="icon-big" src="../images/user-icon.svg"  alt="user image" />
+                <h2 style="color: #282828; margin-bottom: 0;">Connexion</h2>
+                <p style="color: #282828; margin-top: 0;">à mon espace personnel</p>
+
+                <form class="fields">
+                    <label for="champ-login">Email</label>
+                    <input class="rounded-input no-horizontal-margin" id="champ-login" type="text" value="" placeholder="exemple@client.fr" required/>
+
+                    <label for="champ-password">Mot de passe</label>
+                    <input class="rounded-input no-horizontal-margin" id="champ-password" type="password" required/>
+                </form>
+
+                <button class="rounded-button" id="login">Connexion</button>
+
+                <!-- Lien vers l'accueil -->
+                <p>Première visite ? <a href="signup.html">Créer un compte</a><br /><br /><a href="home.html">Retour à la page d'Accueil</a></p>
+            </div>
+            <img style="object-fit: cover;
+                 object-position: center; margin-top: 20px; margin-bottom: 20px; max-width: 40vw; max-height: 100%; height: auto; width: auto;" src="../images/react-if-image.png"  alt="React'If to your service" />  
+        </div>
+
     </body>
 </html>

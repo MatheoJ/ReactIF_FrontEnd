@@ -14,10 +14,10 @@ $(document).ready( function () {
         }        
     });
     
-    $('#bouton-connection').on( 'click', function () { // Fonction appelée lors du clic sur le bouton
+    $('#login').on( 'click', function () { // Fonction appelée lors du clic sur le bouton
 
-        console.log("clic sur le bouton de connection"); // LOG dans Console Javascript
-        $('#notification').html("Connection..."); // Message pour le paragraphe de notification
+        alertify.set('notifier', 'delay', 2);
+        alertify.success("Connexion ...");
 
         // Récupération de la valeur des champs du formulaire
         var champLogin = $('#champ-login').val();
@@ -43,8 +43,10 @@ $(document).ready( function () {
         .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
             console.log('Response',response); // LOG dans Console Javascript
             if (response.connection) {
-                $('#notification').html("Connection OK");  // Message pour le paragraphe de notification
-                // TODO: afficher les informations du client dans la notification
+                // Redirect user
+                // alertify.set('notifier', 'delay', 2);
+                // alertify.success("Bonjour " + response.client.first_name + " !");
+        
                 // Exemple: Connection de Ada Lovelace (ID 1)
                 
                 if(mode==="Client"){
@@ -55,12 +57,15 @@ $(document).ready( function () {
                 }
             }
             else {
-                $('#notification').html("Erreur de Connection"); // Message pour le paragraphe de notification
+                alertify.set('notifier', 'delay', 5);
+                alertify.error("Identifiants invalides");
+                // Message pour le paragraphe de notification
             }
         })
         .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
             console.log('Error',error); // LOG dans Console Javascript
-            alert("Erreur lors de l'appel AJAX");
+            alertify.set('notifier', 'delay', 5);
+            alertify.error("Erreur lors de l'appel AJAX.\nVeuillez réessayer plus tard.");
         })
         .always( function () { // Fonction toujours appelée
 

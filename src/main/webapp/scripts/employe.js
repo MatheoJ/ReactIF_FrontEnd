@@ -37,43 +37,43 @@ function generateMarkers() {
     // Petite popup Google Maps
     var infowindow = makeInfoWindow('');
 
-   
-    
+
+
     for (var i in interventionList) {
         console.log(i);
         console.log(interventionList.length);
         var iconImage = null; // marker par défaut   
-        
+
         //Si on est dans les dernière pair de coordonnées alors ce sont celle de l'agence 
-        
+
         var marker = new google.maps.Marker({
-                map: googleMapInstance,
-                position: {lat: latTab[i], lng: lngTab[i]},
-                title: 'Intervention #' + interventionList[i].id,
-                icon: iconImage
+            map: googleMapInstance,
+            position: {lat: latTab[i], lng: lngTab[i]},
+            title: 'Intervention #' + interventionList[i].id,
+            icon: iconImage
         });
         attachInfoWindow(
-            marker, infowindow,
-            '<div><strong><a ' + i + '">Intervention #' + interventionList[i].id + '</a></strong><br/>Ceci est la position de l\'intervention ' + interventionList[i].id  + '</div>'
-        );
-        
-        
-        
-    }
-    
-    var j=interventionList.length;
-    
-    marker = new google.maps.Marker({
-                map: googleMapInstance,
-                position: {lat: latTab[j], lng: lngTab[j]},
-                title: 'Angence',
-                icon: {url: '../images/home.png', scaledSize: new google.maps.Size(32, 32)}
-            });
-            attachInfoWindow(
                 marker, infowindow,
-                '<div><strong><a ' + j + '">Agence' + '</a></strong><br/>Ceci est la position de l\'agence ' + '</div>'
-    );
-    
+                '<div><strong><a ' + i + '">Intervention #' + interventionList[i].id + '</a></strong><br/>Ceci est la position de l\'intervention ' + interventionList[i].id + '</div>'
+                );
+
+
+
+    }
+
+    var j = interventionList.length;
+
+    marker = new google.maps.Marker({
+        map: googleMapInstance,
+        position: {lat: latTab[j], lng: lngTab[j]},
+        title: 'Angence',
+        icon: {url: '../images/home.png', scaledSize: new google.maps.Size(32, 32)}
+    });
+    attachInfoWindow(
+            marker, infowindow,
+            '<div><strong><a ' + j + '">Agence' + '</a></strong><br/>Ceci est la position de l\'agence ' + '</div>'
+            );
+
 
 }
 
@@ -92,65 +92,37 @@ $(document).ready(function () {
                 console.log('Response', response); // LOG dans Console Javascript
                 if (response.error)
                 {
-                    console.log(response.errorMessage);
+                    alertify.set('notifier', 'delay', 6);
+                    alertify.error(response.errorMessage);
                 } else {
-                    interventionList=response.interventionList;
-                    latTab=response.lat;
-                    lngTab=response.lng;
+                    interventionList = response.interventionList;
+                    latTab = response.lat;
+                    lngTab = response.lng;
                     generateMarkers();
-                    
+
                     fillProfile(response);
-                   
+
                 }
-                
+
             })
             .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
                 console.log('Error', error); // LOG dans Console Javascript
-                alert("Erreur lors de l'appel AJAX");
+                alertify.set('notifier', 'delay', 6);
+                alertify.error("Erreur lors de l'appel AJAX. Veuillez réessayer plus tard");
             })
             .always(function () { // Fonction toujours appelée
 
             });
-    $(".sidebar-menu").find("a").on("click", function (i) {
-        i.preventDefault();
-        // Appel AJAX
-        let href = $(this).attr('href');
-        let todo = $(this).attr('data-todo');
-        // Appel AJAX
-        $.ajax({
-            url: '../ActionServlet',
-            method: 'POST',
-            data: {
-                todo: todo
-            },
-            dataType: 'json'
-        })
-                .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
-                    console.log('Response', response); // LOG dans Console Javascript
-                    if (!response.error) {
-                        
-                    } else {
-                    }
-                })
-                .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
-                    console.log('Error', error); // LOG dans Console Javascript
-                    alert("Erreur lors de l'appel AJAX");
-                })
-                .always(function () { // Fonction toujours appelée
-
-                });
-    });
     $(".redirect-link").on("click", function (i) {
         i.preventDefault();
         let todo = $(this).attr('data-todo');
-        
+
         console.log(todo);
         // Appel AJAX
         let href = $(this).attr('href');
         // If the link isn't empty
         if (href !== "#") {
             // Appel AJAX
-            console.log("on arrive la");
             $.ajax({
                 url: '../ActionServlet',
                 method: 'POST',
@@ -163,8 +135,8 @@ $(document).ready(function () {
                         console.log('Response', response); // LOG dans Console Javascript
                         if (response.error) {
                             console.log('Error', response.error); // LOG dans Console Javascript
-                            alert("Erreur lors de l'appel AJAX\n" + response.error);
-                            
+                            alertify.set('notifier', 'delay', 6);
+                            alertify.error(response.errorMessage);
                         } else {
                             togglePanel(todo);
                             switch (todo)
@@ -183,7 +155,8 @@ $(document).ready(function () {
                     })
                     .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
                         console.log('Error', error); // LOG dans Console Javascript
-                        alert("Erreur lors de l'appel AJAX");
+                        alertify.set('notifier', 'delay', 6);
+                        alertify.error("Erreur lors de l'appel AJAX. Veuillez réessayer plus tard");
                     })
                     .always(function () { // Fonction toujours appelée
 
@@ -192,39 +165,38 @@ $(document).ready(function () {
 
 
     });
-    $('#clotureButton').on( 'click', function () { // Fonction appelée lors du clic sur le bouton
-        
+    $('#clotureButton').on('click', function () { // Fonction appelée lors du clic sur le bouton
+
         var statut = $('#selectStatut').val();
         var commentaire = $('#commentText').val();
         $.ajax({
-                url: '../ActionServlet',
-                method: 'POST',
-                data: {
-                    todo: "endIntervention",
-                    statut: statut,
-                    commentaire: commentaire
-                },
-                dataType: 'json'
-            })
-        .done( function (response) { // Fonction appelée en cas d'appel AJAX réussi
-            console.log('Response',response); // LOG dans Console Javascript
-            if (response.endSuccess) {
-                location.reload();
-            }
-            else {
-                
-            }
+            url: '../ActionServlet',
+            method: 'POST',
+            data: {
+                todo: "endIntervention",
+                statut: statut,
+                commentaire: commentaire
+            },
+            dataType: 'json'
         })
-        .fail( function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
-            console.log('Error',error); // LOG dans Console Javascript
-            alert("Erreur lors de l'appel AJAX");
-        })
-        .always( function () { // Fonction toujours appelée
+                .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                    console.log('Response', response); // LOG dans Console Javascript
+                    if (response.endSuccess) {
+                        location.reload();
+                    } else {
+                        alertify.set('notifier', 'delay', 6);
+                        alertify.error(response.errorMessage);
+                    }
+                })
+                .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                    console.log('Error', error); // LOG dans Console Javascript
+                    alertify.set('notifier', 'delay', 6);
+                    alertify.error("Erreur lors de l'appel AJAX. Veuillez réessayer plus tard");
+                })
+                .always(function () { // Fonction toujours appelée
 
-        }); 
-        
+                });
     });
-   
 });
 
 
@@ -236,8 +208,8 @@ function fillProfile(response)
     document.getElementById("agence").innerHTML = response.employe.agence;
     document.getElementById("email").innerHTML = response.employe.mail;
     document.getElementById("distance").innerHTML = response.distance;
-    
-    
+
+
     if (response.currentIntervention.exists) {
         document.getElementById("current-intervention-status").innerHTML = "Intervention n°" + response.currentIntervention.id + " en cours ...";
         document.getElementById("coltureIntervention").style.display = "block";
@@ -295,7 +267,7 @@ function fillProfile(response)
             case "Incident":
                 break;
         }
-        
+
     } else {
         $("#current-intervention-status").textContent = "Aucune intervention en cours";
     }
@@ -344,6 +316,8 @@ function fillHistory(response)
         th = document.createElement("th");
         if (intervention.status === "Succès") {
             content = "<span class='green'>" + intervention.status + "</span>";
+        } else if (intervention.status === null) {
+            content = "<span class='not-applicable'>N/A</span>";
         } else {
             content = "<span class='red'>" + intervention.status + "</span>";
         }
@@ -385,8 +359,8 @@ function fillHistory(response)
         }
         th.appendChild(document.createTextNode(""));
         th.innerHTML = content;
-        tr.appendChild(th);  
-        
+        tr.appendChild(th);
+
 
         table.appendChild(tr);
     });

@@ -18,28 +18,33 @@ import metier.modele.Client;
  *
  * @author mjoseph
  */
-public class SignUpClientSerialisation extends Serialization{
+public class SignUpClientSerialisation extends Serialization {
 
     @Override
     public void appliquer(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Boolean connection =(Boolean) request.getAttribute("signedUp");
-        
         JsonObject container = new JsonObject();
         Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-        container.addProperty("signedUp", connection);
-        if (connection == true){
+        
+        Boolean error = (Boolean) request.getAttribute("error");
+        container.addProperty("error", error);
+        
+        if (error) {
+            container.addProperty("errorMessage", (String) request.getAttribute("errorMessage"));
+        } else {
+            
             JsonObject jsonClient = new JsonObject();
-            Client client =(Client) request.getAttribute("client");
-            jsonClient.addProperty("id",client.getId());
-            jsonClient.addProperty("lastName",client.getNom());
-            jsonClient.addProperty("firstName",client.getPrenom());
-            jsonClient.addProperty("mail",client.getMail());
+            Client client = (Client) request.getAttribute("client");
+            jsonClient.addProperty("id", client.getId());
+            jsonClient.addProperty("lastName", client.getNom());
+            jsonClient.addProperty("firstName", client.getPrenom());
+            jsonClient.addProperty("mail", client.getMail());
             container.add("client", jsonClient);
         }
-        
+
         response.setContentType("application/json;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.println(gson.toJson(container));
-        out.close(); }
-    
+        try (PrintWriter out = response.getWriter()) {
+            out.println(gson.toJson(container));
+        }
+    }
+
 }
