@@ -1,6 +1,6 @@
 #profile {
-    height: 100vh;
-    max-height: 100vh;
+    height: 90%;
+    max-height: 90%;
 }
 
 #profile-name {
@@ -13,6 +13,14 @@
     margin-top: 5px;
 }
 
+.list {
+    list-style-type: none;
+}
+.list > li > *
+{
+    margin-right: 2em;
+}
+
 .profile-header h1 {
     float: left;
 
@@ -23,7 +31,6 @@
 }
 
 .information-wrapper {
-    height: 100%;
     display: flex;
     flex-direction: row;
     gap: 10;
@@ -50,6 +57,13 @@
     padding: 20px;
     margin: 20px;
 }
+.tile-text {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 3em;
+    display: inline-block;
+}
 
 .current-intervention {
     background-color: #F5F7F8;
@@ -61,6 +75,10 @@
 .intervention {
     background-color: #F5F7F8;
     margin-top: 2em;
+    min-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
 }
 
 

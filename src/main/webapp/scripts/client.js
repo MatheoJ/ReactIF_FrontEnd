@@ -3,35 +3,71 @@ from './chart.js';
 
 var oldDiv = null;
 
+function redirect(todo)
+{
+    switch (todo)
+    {
+        case "intervention-animal":
+        case "intervention-delivery":
+        case "intervention-incident":
+            togglePanel(todo);
+            break;
+        default:
+            // Appel AJAX
+            let href = $(this).attr('href');
+            // If the link isn't empty
+            if (href !== "#") {
+                // Appel AJAX
+                $.ajax({
+                    url: '../ActionServlet',
+                    method: 'POST',
+                    data: {
+                        todo: todo
+                    },
+                    dataType: 'json'
+                })
+                        .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                            console.log('Response', response); // LOG dans Console Javascript
+                            if (response.error) {
+                                console.log('Error', response.error); // LOG dans Console Javascript
+                                alertify.set('notifier', 'delay', 8);
+                                alertify.error("Erreur lors de l'appel AJAX: \"\n" + response.errorMessage + "\"");
+                                window.history.pushState("", "", href);
+                            } else {
+                                togglePanel(todo);
+                                switch (todo)
+                                {
+                                    case "profile":
+                                        // Destroy previous charts
+                                        Chart.helpers.each(Chart.instances, function (instance) {
+                                            instance.destroy();
+                                        });
+                                        fillProfile(response);
+                                        break;
+                                    case "history":
+                                        fillHistory(response);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        })
+                        .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                            console.log('Error', error); // LOG dans Console Javascript
+                            alertify.set('notifier', 'delay', 8);
+                            alertify.error("Erreur lors de l'appel AJAX: \"\n" + response.errorMessage + "\"");
+                        })
+                        .always(function () { // Fonction toujours appelée
+
+                        });
+            }
+    }
+}
+
 $(document).ready(function () {
 // Appel AJAX
-    $.ajax({
-        url: '../ActionServlet',
-        method: 'POST',
-        data: {
-            todo: 'profile'
-        },
-        dataType: 'json'
-    })
-            .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
-                document.getElementById("profile").style.display = "flex";
-                oldDiv = "profile"
-
-                console.log('Response', response); // LOG dans Console Javascript
-                if (response.error)
-                {
-                    console.log(response.errorMessage);
-                } else {
-                    fillProfile(response);
-                }
-            })
-            .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
-                console.log('Error', error); // LOG dans Console Javascript
-                alert("Erreur lors de l'appel AJAX");
-            })
-            .always(function () { // Fonction toujours appelée
-
-            });
+    redirect("profile");
+    
     $(".sidebar-menu > li.have-children a").on("click", function (i) {
         i.preventDefault();
         if (!$(this).parent().hasClass("active")) {
@@ -47,68 +83,15 @@ $(document).ready(function () {
     $(".redirect-link").on("click", function (i) {
         i.preventDefault();
         let todo = $(this).attr('data-todo');
-        switch (todo)
-        {
-            case "intervention-animal":
-            case "intervention-delivery":
-            case "intervention-incident":
-                togglePanel(todo);
-                break;
-            default:
-                // Appel AJAX
-                let href = $(this).attr('href');
-                // If the link isn't empty
-                if (href !== "#") {
-                    // Appel AJAX
-                    $.ajax({
-                        url: '../ActionServlet',
-                        method: 'POST',
-                        data: {
-                            todo: todo
-                        },
-                        dataType: 'json'
-                    })
-                            .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
-                                console.log('Response', response); // LOG dans Console Javascript
-                                if (response.error) {
-                                    console.log('Error', response.error); // LOG dans Console Javascript
-                                    alert("Erreur lors de l'appel AJAX\n" + response.error);
-                                    window.history.pushState("", "", href);
-                                } else {
-                                    togglePanel(todo);
-                                    switch (todo)
-                                    {
-                                        case "profile":
-                                            // Destroy previous charts
-                                            Chart.helpers.each(Chart.instances, function (instance) {
-                                                instance.destroy();
-                                            });
-                                            fillProfile(response);
-                                            break;
-                                        case "history":
-                                            fillHistory(response);
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
-                            })
-                            .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
-                                console.log('Error', error); // LOG dans Console Javascript
-                                alert("Erreur lors de l'appel AJAX");
-                            })
-                            .always(function () { // Fonction toujours appelée
-
-                            });
-                }
-        }
+        redirect(todo);
 
     });
+    
     $(".send-intervention").on("click", function (i) {
 // Appel AJAX
         let todo = $(this).attr('data-todo');
         let data = {
-                todo: todo
+            todo: todo
         };
         switch (todo) {
             case "intervention-animal":
@@ -121,7 +104,7 @@ $(document).ready(function () {
                 data["description"] = document.getElementById("delivery-description").value;
                 break;
             case "intervention-incident":
-                data["description"] = document.getElementById("intervention-description").value;
+                data["description"] = document.getElementById("incident-description").value;
                 break;
         }
         console.log(data);
@@ -135,14 +118,20 @@ $(document).ready(function () {
                 .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
                     console.log('Response', response); // LOG dans Console Javascript
                     if (!response.error) {
-                        alert("Demande d'intervention créée avec succès !");
+                        alertify.set('notifier', 'delay', 2);
+                        alertify.success("Demande créée avec succès");
+                        setTimeout(function () {
+                            redirect("profile");
+                        }, 2000);
                     } else {
-                        alert("Echec de création de la demande d'intervention.\nVeuillez réessayer plus tard");
+                        alertify.set('notifier', 'delay', 6);
+                        alertify.error(response.errorMessage);
                     }
                 })
                 .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
                     console.log('Error', error); // LOG dans Console Javascript
-                    alert("Erreur lors de l'appel AJAX");
+                    alertify.set('notifier', 'delay', 8);
+                    alertify.error("Erreur lors de l'appel AJAX: \"\n" + response.errorMessage + "\"");
                 })
                 .always(function () { // Fonction toujours appelée
 
@@ -260,9 +249,10 @@ function fillProfile(response)
     if (response.intervention.exists) {
         document.getElementById("current-intervention-status").innerHTML = "Intervention n°" + response.intervention.id + " en cours ...";
         // Get ul list
-        let ul = $("#current-intervention-list");
+        let ul = document.getElementById("current-intervention-list");
         // Clear ul list
-        ul.innerHtml = "";
+        document.getElementById("current-intervention-list").innerHTML = "";
+
         // Init ul list
         let li = document.createElement("li");
         let content = "<span class='bold'>Type:</span>" + response.intervention.type;
@@ -274,13 +264,17 @@ function fillProfile(response)
         li.appendChild(document.createTextNode(""));
         li.innerHTML = content;
         ul.appendChild(li);
+
+        if (response.intervention.description !== null) {
+            li = document.createElement("li");
+            content = "<span class='bold'>Description:</span>" + response.intervention.description;
+            li.appendChild(document.createTextNode(""));
+            li.innerHTML = content;
+            ul.appendChild(li);
+        }
+
         li = document.createElement("li");
-        content = "<span class='bold'>Descritpion:</span>" + response.intervention.description;
-        li.appendChild(document.createTextNode(""));
-        li.innerHTML = content;
-        ul.appendChild(li);
-        li = document.createElement("li");
-        content = "<span class='bold'>Employé:</span>" + response.intervention.employee;
+        content = "<span class='bold'>Employé:</span>" + response.intervention.employee.last_name.toUpperCase() + " " + response.intervention.employee.first_name;
         li.appendChild(document.createTextNode(""));
         li.innerHTML = content;
         ul.appendChild(li);

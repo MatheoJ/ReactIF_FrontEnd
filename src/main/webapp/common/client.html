@@ -31,8 +31,15 @@
         <link rel="stylesheet" href="../css/styles.css?v=1.0" />
         <link rel="stylesheet" href="../css/client.css?v=1.0" />
         <link rel="stylesheet" href="../css/chart.css?v=1.0" />
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.8.0/build/css/alertify.min.css" />
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/what-input/4.2.0/what-input.min.js" integrity="sha256-7wGy9IEPmo9Jk/I86siWbZFPeclfjFitAAfmvxBUc7k=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/js/foundation.min.js" crossorigin="anonymous"></script>
+
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
         <script type="module" src="../scripts/client.js"></script>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
 
@@ -61,7 +68,7 @@
                 </div>
                 <div class="tile current-intervention">
                     <h2 id="current-intervention-status">Aucune intervention en cours</h2>
-                    <ul id="current-intervention-list">
+                    <ul class="list" id="current-intervention-list">
                     </ul>
                 </div>
                 <div class="information-wrapper">
@@ -104,7 +111,7 @@
                     <div class="tile personal_data">
                         <h2>Informations personnelles</h2>
 
-                        <p style="margin-top: 3em;">
+                        <p class="tile-text">
                             <span class="bold">Téléphone :</span>
                             <br />
                             <span id="phone_number"></span>
@@ -166,7 +173,9 @@
                         <button class="rounded-button send-intervention" data-todo="intervention-animal">Envoyer</button>
                     </div>
                 </div>
-                <div id="intervention-delivery" style="display: none;">
+            </div>
+            <div id="intervention-delivery" style="display: none;">
+                <div class="tile intervention">
                     <div class="fields">
                         <div class="pair">
                             <span class="bold">Type:</span>
@@ -190,7 +199,9 @@
                         <button class="rounded-button send-intervention" data-todo="intervention-delivery">Envoyer</button>
                     </div>
                 </div>
-                <div id="intervention-incident" style="display: none;">
+            </div>
+            <div id="intervention-incident" style="display: none;">
+                <div class="tile intervention">
                     <div class="fields">
                         <div class="pair">
                             <span class="bold">Type:</span>
@@ -207,5 +218,6 @@
                     </div>
                 </div>
             </div>
+        </div>
     </body>
 </html>
