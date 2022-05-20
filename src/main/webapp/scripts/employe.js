@@ -28,8 +28,6 @@ function initMap() {
     });
 
     var infowindow = makeInfoWindow('');
-
-
 }
 
 function generateMarkers() {
@@ -66,7 +64,7 @@ function generateMarkers() {
     marker = new google.maps.Marker({
         map: googleMapInstance,
         position: {lat: latTab[j], lng: lngTab[j]},
-        title: 'Angence',
+        title: 'Agence',
         icon: {url: '../images/home.png', scaledSize: new google.maps.Size(32, 32)}
     });
     attachInfoWindow(
@@ -101,9 +99,7 @@ $(document).ready(function () {
                     generateMarkers();
 
                     fillProfile(response);
-
                 }
-
             })
             .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
                 console.log('Error', error); // LOG dans Console Javascript
@@ -113,6 +109,36 @@ $(document).ready(function () {
             .always(function () { // Fonction toujours appelée
 
             });
+    $(".disconnect").on("click", function (i) {
+        $.ajax({
+            url: '../ActionServlet',
+            method: 'POST',
+            data: {
+                todo: 'disconnect'
+            },
+            dataType: 'json'
+        })
+                .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                    console.log('Response', response); // LOG dans Console Javascript
+                    if (response.error)
+                    {
+                        alertify.set('notifier', 'delay', 6);
+                        alertify.error(response.errorMessage);
+                    } else {
+                        // Simulate a mouse click:
+                        window.location.href = "../common/home.html";
+                    }
+                })
+                .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                    console.log('Error', error); // LOG dans Console Javascript
+                    alertify.set('notifier', 'delay', 6);
+                    alertify.error("Erreur lors de l'appel AJAX. Veuillez réessayer plus tard");
+                })
+                .always(function () { // Fonction toujours appelée
+
+                });
+    });
+
     $(".redirect-link").on("click", function (i) {
         i.preventDefault();
         let todo = $(this).attr('data-todo');
@@ -314,7 +340,7 @@ function fillHistory(response)
         tr.appendChild(th);
         // STATUS
         th = document.createElement("th");
-        if (intervention.status === "Succès") {
+        if (intervention.status === "Succès" || intervention.status === "success") {
             content = "<span class='green'>" + intervention.status + "</span>";
         } else if (intervention.status === null) {
             content = "<span class='not-applicable'>N/A</span>";

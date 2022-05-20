@@ -19,7 +19,6 @@ import Actions.GetProfileEmployeAction;
 import Actions.SignUpClientAction;
 import dao.JpaUtil;
 import java.io.IOException;
-import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -83,6 +82,14 @@ public class ActionServlet extends HttpServlet {
         HttpSession session = request.getSession(true);
 
         switch (todo) {
+            case "disconnect": {
+                session.invalidate();
+                // Send a success state (even if the user wasn't connected before)
+                // to notify the user he isn't logged
+                request.setAttribute("error", Boolean.FALSE);
+                Serialization serialization = new GetErrorSerialization();
+                serialization.appliquer(request, response);
+            }
             case "connect": {
                 Action action = new AuthentificateClientAction(service);
                 action.executer(request);

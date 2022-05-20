@@ -19,14 +19,18 @@
 
         <link rel="stylesheet" href="../css/styles.css?v=1.0" />
         <link rel="stylesheet" href="../css/employe.css?v=1.0" />
-        
+
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.8.0/build/css/alertify.min.css" />
         <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/what-input/4.2.0/what-input.min.js" integrity="sha256-7wGy9IEPmo9Jk/I86siWbZFPeclfjFitAAfmvxBUc7k=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/js/foundation.min.js" crossorigin="anonymous"></script>
-        
-        <script type="module" src="../scripts/employe.js"></script>
+
+        <script  src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <!-- Do not use as module ! -->
+        <script src="../scripts/employe.js"></script>
     </head>
     <body>
         <nav>
@@ -35,8 +39,9 @@
                 <li><span class="nav-section-title"></span></li>
                 <li><a class="box redirect-link" href="/profile" data-todo="profileEmploye"><img class="icon" src="../images/user-icon.svg"  alt="user image" /><span>Profil</span></a></li>
                 <li><a class="box redirect-link" href="/history" data-todo="historyEmploye"><img class="icon" src="../images/history.svg"  alt="user image" /><span>Historique des interventions</span></a></li>
-                
+
             </ul>
+            <button class="disconnect">Deconnexion</button>
         </nav>
         <div id="content">
             <div id="profileEmploye", style="display: flex;">
@@ -69,42 +74,44 @@
                 </div>
                 <div class="information-wrapper">
                     <div class="tile statistics">
-                            <h2>Distance totale parcourue ajourd'hui</h2>
-                            <span id="distance" style="font-size: xx-large;font-weight: bold;">0</span>
-                            <span id="kms" style="font-size: x-large;">kms</span>
-                            <br />
-                     </div>
+                        <h2>Distance totale parcourue ajourd'hui</h2>
+                        <span id="distance" style="font-size: xx-large;font-weight: bold;">0</span>
+                        <span id="kms" style="font-size: x-large;">kms</span>
+                        <br />
+                    </div>
 
                     <div class="tile personal_data">
-                            <h2>Informations personnelles</h2>
-                            <p style="margin-top: 3em;">
-                                <span class="bold">Téléphone :</span>
-                                <br />
-                                <span id="phone_number"></span>
-                                <br />
-                                <br />
-                                <span class="bold">Agence :</span>
-                                <br />
-                                <span id="agence"></span>
-                                <br />
-                                <br />
-                                <span class="bold">Adresse électronique :</span>
-                                <br />
-                                <span id="email"></span>
-                                <br />
-                                <br />                            
-                            </p>
+                        <h2>Informations personnelles</h2>
+                        <p style="margin-top: 3em;">
+                            <span class="bold">Téléphone :</span>
+                            <br />
+                            <span id="phone_number"></span>
+                            <br />
+                            <br />
+                            <span class="bold">Agence :</span>
+                            <br />
+                            <span id="agence"></span>
+                            <br />
+                            <br />
+                            <span class="bold">Adresse électronique :</span>
+                            <br />
+                            <span id="email"></span>
+                            <br />
+                            <br />                            
+                        </p>
                     </div>
                 </div>
-                
-                <div class="tile mapI">
-                        <h2>Carte des interventions</h2>
-                        <div id="map">
 
+                <div class="tile mapI">
+                    <h2>Carte des interventions</h2>
+                    <div id="map-wrapper" class="wrapper-column">
+                        <div id="map">
+                            <p class="red">Impossible de charger les coordonnées des clients listés dans vos interventions ! Au moins une adresse est invalide.</p>
                         </div>
-                 </div>
-                
-                
+                    </div>
+                </div>
+
+
             </div>
             <div id="historyEmploye" style="display: none;">
                 <div class="tile history">

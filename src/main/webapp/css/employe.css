@@ -54,8 +54,7 @@ li{
     flex-direction: column;
 }
 
-
-.current-intervention {
+.mapI, .current-intervention {
     background-color: #F5F7F8;
 }
 .statistics {

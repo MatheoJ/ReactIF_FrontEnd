@@ -68,6 +68,36 @@ $(document).ready(function () {
 // Appel AJAX
     redirect("profile");
 
+    $(".disconnect").on("click", function (i) {
+        $.ajax({
+            url: '../ActionServlet',
+            method: 'POST',
+            data: {
+                todo: 'disconnect'
+            },
+            dataType: 'json'
+        })
+                .done(function (response) { // Fonction appelée en cas d'appel AJAX réussi
+                    console.log('Response', response); // LOG dans Console Javascript
+                    if (response.error)
+                    {
+                        alertify.set('notifier', 'delay', 6);
+                        alertify.error(response.errorMessage);
+                    } else {
+                        // Simulate a mouse click:
+                        window.location.href = "../common/home.html";
+                    }
+                })
+                .fail(function (error) { // Fonction appelée en cas d'erreur lors de l'appel AJAX
+                    console.log('Error', error); // LOG dans Console Javascript
+                    alertify.set('notifier', 'delay', 6);
+                    alertify.error("Erreur lors de l'appel AJAX. Veuillez réessayer plus tard");
+                })
+                .always(function () { // Fonction toujours appelée
+
+                });
+    });
+    
     $(".sidebar-menu > li.have-children a").on("click", function (i) {
         i.preventDefault();
         if (!$(this).parent().hasClass("active")) {
@@ -182,7 +212,7 @@ function fillHistory(response)
         tr.appendChild(th);
         // STATUS
         th = document.createElement("th");
-        if (intervention.status === "Succès") {
+        if (intervention.status === "Succès" || intervention.status === "success") {
             content = "<span class='green'>" + intervention.status + "</span>";
         } else if (intervention.status === null) {
             content = "<span class='not-applicable'>N/A</span>";
