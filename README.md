@@ -1,6 +1,6 @@
 # React'IF_FrontEnd
 This is the front of an application called React'IF  
-It is a Maven project, and is using Tomcat.  
+It is a Maven project, and is using Tomcat for the server.  
 
 ## Architecture
 This poject is using the MVC architectural pattern.  
